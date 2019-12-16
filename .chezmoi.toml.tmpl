@@ -1,0 +1,6 @@
+{{- $email := promptString "email" -}}
+[data]
+  email = "{{ $email }}"
+[merge]
+  command = "nvim"
+  args = "-d"
