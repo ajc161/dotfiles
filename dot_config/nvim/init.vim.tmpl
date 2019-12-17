@@ -6,4 +6,13 @@ endif
 
 call plug#begin()
 
+" theme
+Plug 'chriskempson/base16-vim'
+
 call plug#end()
+
+" theme
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
