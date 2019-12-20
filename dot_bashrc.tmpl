@@ -2,7 +2,43 @@
 # ~/.bashrc
 #
 
+# If not running interactively, don't do anything
 [[ $- != *i* ]] && return
+
+# shell options
+shopt -s autocd
+shopt -s cdspell
+#shopt -s checkhash
+shopt -s checkjobs
+shopt -s checkwinsize
+shopt -s dirspell
+shopt -s extglob
+shopt -s globstar
+#shopt -s histappend
+#shopt -s histreedit
+#shopt -s histverify
+shopt -s nocaseglob
+
+set -o vi
+
+export HISTCONTROL=ignoreboth:erasedups
+
+export CDPATH=.:~/Projects:~
+
+export BASE16_SHELL_SET_BACKGROUND=true
+
+{{- if eq .chezmoi.os "linux" }}
+[ -f /usr/share/git/completion/git-prompt.sh ] && . /usr/share/git/completion/git-prompt.sh
+[ -f /usr/share/fzf/completion.bash ] && . /usr/share/fzf/completion.bash
+[ -f /usr/share/fzf/key-bindings.bash ] && . /usr/share/fzf/key-bindings.bash
+{{- end }}
+{{- if eq .chezmoi.os "darwin" }}
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+[ -f /usr/local/opt/fzf/shell/completion.bash ] && . /usr/local/opt/fzf/shell/completion.bash
+[ -f /usr/local/opt/fzf/shell/key-bindings.bash ] && . /usr/local/opt/fzf/shell/key-bindings.bash
+{{- end }}
+
+eval "$(jenv init -)"
 
 colors() {
 	local fgc bgc vals seq0
@@ -99,6 +135,15 @@ alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less
+
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+
+alias ls='exa'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+alias cat='bat'
 
 xhost +local:root > /dev/null 2>&1
 
