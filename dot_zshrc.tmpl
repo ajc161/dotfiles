@@ -1,0 +1,47 @@
+# history
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+
+# options
+setopt autocd beep extendedglob nomatch notify
+cdpath=("$HOME/Projects")
+
+# vi mode
+bindkey -v
+
+# shell options
+export EDITOR=nvim
+
+# completion
+zstyle :compinstall filename "$HOME/.zshrc"
+autoload -Uz compinit
+compinit
+
+# starship
+eval "$(starship init zsh)"
+
+# aliases
+alias cp='cp -i'
+alias df='df -h'
+alias free='free -m'
+alias ls='exa'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+alias cat='bat'
+
+# restic
+export RESTIC_REPOSITORY='{{ (index (bitwarden "item" "restic").login.uris 0).uri }}'
+export RESTIC_PASSWORD_COMMAND="bw get password restic"
+
+# theme
+export BASE16_SHELL_SET_BACKGROUND=true
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+  eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+# fuzzy search
+[ -f /usr/share/fzf/completion.zsh ] && . /usr/share/fzf/completion.zsh
+[ -f /usr/share/fzf/key-bindings.zsh ] && . /usr/share/fzf/key-bindings.zsh
