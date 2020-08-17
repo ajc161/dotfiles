@@ -1,6 +1,6 @@
 " vim:fdm=marker
 
-" plug {{"{{{"}}
+" plug {{{
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -12,47 +12,33 @@ call plug#begin()
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" taskwarrior
-Plug 'blindFS/vim-taskwarrior'
-
 " languages
 Plug 'rust-lang/rust.vim'
-Plug 'hashivim/vim-terraform'
 
-" language server
-Plug 'autozimu/LanguageClient-neovim', {
-  \ 'branch': 'next',
-  \ 'do': 'bash install.sh',
-  \ }
+" language server and completion
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/echodoc.vim'
 
 " git
 Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
 
 " file browser
 Plug 'scrooloose/nerdtree'
 
-" tag bar
-Plug 'majutsushi/tagbar'
-
-" snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
 " fuzzy search
-if has('macunix')
+if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf'
+else
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 endif
 Plug 'junegunn/fzf.vim'
 
-" colors
+" theme
 Plug 'chriskempson/base16-vim'
 call plug#end()
-" {{"}}}"}}
+" }}}
 
-" general {{"{{{"}}
+" general {{{
 let mapleader = ' '
 let maplocalleader = ' '
 
@@ -105,13 +91,12 @@ map <leader>ss :setlocal spell!<cr>
 map <leader>pp :setlocal paste!<cr>
 
 noremap <silent> <leader>N :NERDTreeToggle<cr>
-nnoremap <silent> <leader>T :TagbarToggle<cr>
 nmap <leader>G  :G<cr>
 nnoremap <silent> <leader>V :e $MYVIMRC<cr>
 nnoremap <leader>VV :source $MYVIMRC<cr>
-" {{"}}}"}}
+" }}}
 
-" search {{"{{{"}}
+" search {{{
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
@@ -136,28 +121,18 @@ nnoremap <silent> <leader><leader> :Files<CR>
 nnoremap <silent> <leader>B        :Buffers<CR>
 nnoremap <silent> <leader>L        :Lines<CR>
 nnoremap <silent> <leader>`        :Marks<CR>
-"nnoremap <silent> <Leader>rg       :Rg <C-R><C-W><CR>
-"nnoremap <silent> <Leader>RG       :Rg <C-R><C-A><CR>
-""xnoremap <silent> <Leader>rg       y:Rg <C-R>"<CR>
-" nnoremap <silent> q: :History:<CR>
-" nnoremap <silent> q/ :History/<CR>
-"nmap <leader><esc> <plug>(fzf-maps-n)
-"xmap <leader><esc> <Plug>(fzf-maps-x)
-"omap <leader><esc> <plug>(fzf-maps-o)
-" {{"}}}"}}
+nnoremap <silent> <leader>rg       :Rg <C-R><C-W><CR>
+nnoremap <silent> <leader>RG       :Rg <C-R><C-A><CR>
+xnoremap <silent> <leader>rg       y:Rg <C-R>"<CR>
+nnoremap <silent> q:               :History:<CR>
+nnoremap <silent> q/               :History/<CR>
+nmap              <leader><esc>    <plug>(fzf-maps-n)
+xmap              <leader><esc>    <plug>(fzf-maps-x)
+omap              <leader><esc>    <plug>(fzf-maps-o)
+" }}}
 
-" completion {{"{{{"}}
-
-" snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-nnoremap <silent> <leader><tab>    :Snippets<CR>
-
-"" language server
+" completion {{{
 let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('smart_case', v:true)
-call deoplete#custom#source('ultisnips', 'rank', 800)
 let g:LanguageClient_serverCommands = {
   \ 'rust': ['rls'],
   \ 'java': ['jdtls', '-data', getcwd()],
@@ -168,39 +143,10 @@ autocmd InsertLeave * silent! pclose!
 
 nnoremap <silent> <Leader>;  :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> <Leader>K  :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> <Leader>D  :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <Leader>R  :call LanguageClient#textDocument_rename()<CR>
+nnoremap <silent> gd  :call LanguageClient#textDocument_definition()<CR>
+" }}}
 
-let g:ulti_expand_res = 0 "default value, just set once
-function! CompleteSnippet()
-  if empty(v:completed_item)
-    return
-  endif
-
-  call UltiSnips#ExpandSnippet()
-  if g:ulti_expand_res > 0
-    return
-  endif
-
-  let l:complete = type(v:completed_item) == v:t_dict ? v:completed_item.word : v:completed_item
-  let l:comp_len = len(l:complete)
-
-  let l:cur_col = mode() == 'i' ? col('.') - 2 : col('.') - 1
-  let l:cur_line = getline('.')
-
-  let l:start = l:comp_len <= l:cur_col ? l:cur_line[:l:cur_col - l:comp_len] : ''
-  let l:end = l:cur_col < len(l:cur_line) ? l:cur_line[l:cur_col + 1 :] : ''
-
-  call setline('.', l:start . l:end)
-  call cursor('.', l:cur_col - l:comp_len + 2)
-
-  call UltiSnips#Anon(l:complete)
-endfunction
-
-autocmd CompleteDone * call CompleteSnippet()
-" {{"}}}"}}
-
-" theme {{"{{{"}}
+" theme {{{
 set background=dark
 let base16colorspace=256
 if filereadable(expand("~/.vimrc_background"))
@@ -208,4 +154,4 @@ if filereadable(expand("~/.vimrc_background"))
 endif
 let g:airline_theme='base16_vim'
 let g:airline_powerline_fonts = 1
-" {{"}}}"}}
+" }}}
