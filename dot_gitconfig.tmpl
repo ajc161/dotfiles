@@ -1,8 +1,16 @@
 [user]
 	name = Adam Cook
 	email = {{ .email }}
+{{- if index . "signingkey" }}
+	signingkey = {{ .signingkey }}
+[commit]
+	gpgsign = true
+{{- end }}
 [status]
 	submoduleSummary = true
+[pull]
+	rebase = true
+	ff = only
 [diff]
 	tool = vimdiff
 [merge]
