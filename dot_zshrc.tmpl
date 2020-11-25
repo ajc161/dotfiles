@@ -64,3 +64,8 @@ fi
 
 # software versions
 command -v jenv &> /dev/null && eval "$(jenv init -)"
+{{- if eq .chezmoi.os "darwin" }}
+
+# brew
+export HOMEBREW_GITHUB_API_TOKEN='{{ (index (bitwarden "item" "e10deb8d-0f6d-4fbd-8535-aad6000175a7").fields 0).value }}'
+{{- end }}
