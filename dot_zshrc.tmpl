@@ -6,6 +6,10 @@ SAVEHIST=1000
 # options
 setopt autocd beep extendedglob nomatch notify
 cdpath=("$HOME/Projects")
+path=("$HOME/.local/bin" $path)
+if [ -d /snap/bin ]; then
+  path+=(/snap/bin)
+fi
 
 # vi mode
 bindkey -v
@@ -19,18 +23,14 @@ autoload -Uz compinit
 compinit
 
 # starship
-eval "$(starship init zsh)"
+command -v starship &> /dev/null && eval "$(starship init zsh)"
 
 # aliases
 alias cp='cp -i'
 alias df='df -h'
 alias free='free -m'
-alias ls='exa'
-alias ll='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
-alias cat='bat'
+command -v exa &> /dev/null && alias ls='exa'
+command -v bat &> /dev/null && alias cat='bat'
 
 # restic
 export RESTIC_REPOSITORY='{{ (index (bitwarden "item" "restic").login.uris 0).uri }}'
@@ -69,3 +69,8 @@ command -v jenv &> /dev/null && eval "$(jenv init -)"
 # brew
 export HOMEBREW_GITHUB_API_TOKEN='{{ (index (bitwarden "item" "e10deb8d-0f6d-4fbd-8535-aad6000175a7").fields 0).value }}'
 {{- end }}
+
+# k8s
+command -v kubectl &> /dev/null && source <(kubectl completion zsh)
+command -v helm &> /dev/null && source <(helm completion zsh)
+command -v flux &> /dev/null && source <(flux completion zsh)
