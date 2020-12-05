@@ -52,6 +52,8 @@ fi
 
 if [ -f /usr/share/fzf/key-bindings.zsh ]; then
   source /usr/share/fzf/key-bindings.zsh
+elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
 elif [ -f /usr/local/opt/fzf/shell/key-bindings.zsh ]; then
   source /usr/local/opt/fzf/shell/key-bindings.zsh
 fi
@@ -61,6 +63,7 @@ unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
+export GPG_TTY=$(tty)
 
 # software versions
 command -v jenv &> /dev/null && eval "$(jenv init -)"
@@ -73,4 +76,4 @@ export HOMEBREW_GITHUB_API_TOKEN='{{ (index (bitwarden "item" "e10deb8d-0f6d-4fb
 # k8s
 command -v kubectl &> /dev/null && source <(kubectl completion zsh)
 command -v helm &> /dev/null && source <(helm completion zsh)
-command -v flux &> /dev/null && source <(flux completion zsh)
+command -v flux &> /dev/null && source <(flux completion zsh) && compdef _flux flux
