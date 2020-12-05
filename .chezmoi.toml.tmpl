@@ -1,6 +1,10 @@
 {{- $email := promptString "email" -}}
+{{- $gpgKey := promptString "gpg key" -}}
 [data]
   email = "{{ $email }}"
+  signingkey = "{{ $gpgKey }}"
 [merge]
   command = "nvim"
   args = "-d"
+[gpg]
+  recipient = "{{ $gpgKey }}"
