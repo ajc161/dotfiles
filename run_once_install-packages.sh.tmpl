@@ -1,0 +1,27 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "debian") -}}
+sudo apt install \
+  zsh \
+  gnupg \
+  snapd \
+  neovim \
+  python3-neovim \
+  fzf \
+  exa \
+  ripgrep \
+  fd-find \
+  jq \
+  restic \
+  kubectl \
+  helm
+
+sudo snap install starship
+sudo snap install bw
+sudo snap install batcat
+sudo snap install yq
+sudo snap install fluxctl
+{{ else if eq .chezmoi.os "darwin" -}}
+{{ end -}}
