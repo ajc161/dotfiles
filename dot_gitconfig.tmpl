@@ -3,19 +3,40 @@
 	email = {{ .email }}
 {{- if index . "signingkey" }}
 	signingkey = {{ .signingkey }}
+{{- end }}
+
+[core]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	features = side-by-side line-numbers decorations
+	whitespace-error-style = 22 reverse
+
+[delta "decorations"]
+	commit-decoration-style = bold yellow box ul
+	file-style = bold yellow ul
+	file-decoration-style = none
+
 [commit]
+{{- if index . "signingkey" }}
 	gpgsign = true
 {{- end }}
+
 [status]
 	submoduleSummary = true
+
 [pull]
 	rebase = true
 	ff = only
+
 [diff]
-	tool = vimdiff
-[merge]
-	tool = vimdiff
+	colorMoved = default
+
 [difftool "vimdiff"]
 	path = nvim
+
 [mergetool "vimdiff"]
 	path = nvim
