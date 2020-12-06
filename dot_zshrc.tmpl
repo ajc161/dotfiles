@@ -6,16 +6,9 @@ SAVEHIST=1000
 # options
 setopt autocd beep extendedglob nomatch notify
 cdpath=("$HOME/Projects")
-path=("$HOME/.local/bin" $path)
-if [ -d /snap/bin ]; then
-  path+=(/snap/bin)
-fi
 
 # vi mode
 bindkey -v
-
-# shell options
-export EDITOR=nvim
 
 # completion
 zstyle :compinstall filename "$HOME/.zshrc"
@@ -60,10 +53,6 @@ elif [ -f /usr/local/opt/fzf/shell/key-bindings.zsh ]; then
 fi
 
 # gnupg
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-fi
 export GPG_TTY=$(tty)
 
 # software versions
