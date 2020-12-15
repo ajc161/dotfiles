@@ -2,11 +2,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "debian") -}}
+{{ if eq .chezmoi.os "linux" -}}
+{{ if eq .chezmoi.osRelease.id "debian" -}}
 sudo apt install \
   zsh \
   gnupg \
-  snapd \
   neovim \
   python3-neovim \
   fzf \
@@ -19,6 +19,7 @@ sudo apt install \
   helm \
   awscli
 
+sudo apt install snapd
 sudo snap install starship
 sudo snap install bw
 sudo snap install batcat
@@ -27,5 +28,29 @@ sudo snap install fluxctl
 
 echo 'git-delta must be manually installed'
 echo 'rustup must be manually installed'
+{{ end -}}
 {{ else if eq .chezmoi.os "darwin" -}}
+brew install \
+  zsh \
+  gnupg \
+  neovim \
+  fzf \
+  exa \
+  ripgrep \
+  fd \
+  jq \
+  restic \
+  kubectl \
+  helm \
+  awscli \
+  starship \
+  bitwarden-cli \
+  bat \
+  yq \
+  fluxctl \
+  git-delta \
+  rustup \
+  jenv
+
+pip3 install --user pynvim
 {{ end -}}

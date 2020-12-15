@@ -1,9 +1,10 @@
 typeset -U path
-path=("$HOME/.cargo/bin" "$HOME/.local/bin" $path /snap/bin)
+path=("$HOME/.cargo/bin" "$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $path /snap/bin)
 
 # common exports
 export EDITOR=nvim
-export PAGER=/usr/bin/less
+export PAGER=less
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # gnupg
 unset SSH_AGENT_PID

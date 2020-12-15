@@ -16,15 +16,20 @@ autoload -Uz compinit
 compinit
 
 # starship
-command -v starship &> /dev/null && eval "$(starship init zsh)"
+eval "$(starship init zsh)"
 
 # aliases
 alias cp='cp -i'
 alias df='df -h'
 alias free='free -m'
-command -v exa &> /dev/null && alias ls='exa'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+
+alias ls='exa'
+alias lt='ls --tree'
 command -v batcat &> /dev/null && alias bat='batcat'
-command -v bat &> /dev/null && alias cat='bat'
+alias cat='bat --paging=never'
 
 # restic
 export RESTIC_REPOSITORY='{{ (index (bitwarden "item" "restic").login.uris 0).uri }}'
@@ -64,6 +69,6 @@ export HOMEBREW_GITHUB_API_TOKEN='{{ (index (bitwarden "item" "e10deb8d-0f6d-4fb
 {{- end }}
 
 # k8s
-command -v kubectl &> /dev/null && source <(kubectl completion zsh)
-command -v helm &> /dev/null && source <(helm completion zsh)
-command -v flux &> /dev/null && source <(flux completion zsh) && compdef _flux flux
+source <(kubectl completion zsh)
+source <(helm completion zsh)
+source <(flux completion zsh) && compdef _flux flux
