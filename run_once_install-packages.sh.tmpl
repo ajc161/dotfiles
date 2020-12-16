@@ -28,6 +28,30 @@ sudo snap install fluxctl
 
 echo 'git-delta must be manually installed'
 echo 'rustup must be manually installed'
+{{ else if eq .chezmoi.osRelease.id "arch" -}}
+yay -S --needed \
+  zsh \
+  gnupg \
+  neovim \
+  fzf \
+  exa \
+  ripgrep \
+  fd \
+  jq \
+  restic \
+  kubectl \
+  helm \
+  aws-cli \
+  starship \
+  bitwarden-cli \
+  bat \
+  yq \
+  flux-go \
+  git-delta \
+  rustup
+
+yay -S --needed --asdeps \
+  python-neovim
 {{ end -}}
 {{ else if eq .chezmoi.os "darwin" -}}
 brew install \
