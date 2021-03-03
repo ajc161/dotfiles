@@ -6,13 +6,17 @@ IFS=$'\n\t'
 {{ if eq .chezmoi.osRelease.id "debian" -}}
 sudo apt install \
   zsh \
+  zsh-autosuggestions \
+  zsh-syntax-highlighting \
   gnupg \
+  vim \
   neovim \
   python3-neovim \
   fzf \
   exa \
   ripgrep \
   fd-find \
+  dust \
   jq \
   restic \
   kubectl \
@@ -31,12 +35,16 @@ echo 'rustup must be manually installed'
 {{ else if eq .chezmoi.osRelease.id "arch" -}}
 yay -S --needed \
   zsh \
+  zsh-autosuggestions \
+  zsh-syntax-highlighting \
   gnupg \
+  vim \
   neovim \
   fzf \
   exa \
   ripgrep \
   fd \
+  dust \
   jq \
   restic \
   kubectl \
@@ -56,12 +64,16 @@ yay -S --needed --asdeps \
 {{ else if eq .chezmoi.os "darwin" -}}
 brew install \
   zsh \
+  zsh-autosuggestions \
+  zsh-syntax-highlighting \
   gnupg \
+  vim \
   neovim \
   fzf \
   exa \
   ripgrep \
   fd \
+  dust \
   jq \
   restic \
   kubectl \
