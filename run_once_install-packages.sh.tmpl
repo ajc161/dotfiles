@@ -16,7 +16,6 @@ sudo apt install \
   exa \
   ripgrep \
   fd-find \
-  dust \
   jq \
   restic \
   kubectl \
@@ -32,6 +31,7 @@ sudo snap install fluxctl
 
 echo 'git-delta must be manually installed'
 echo 'rustup must be manually installed'
+echo 'dust must be install using cargo'
 {{ else if eq .chezmoi.osRelease.id "arch" -}}
 yay -S --needed \
   zsh \

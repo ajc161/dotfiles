@@ -148,6 +148,7 @@ nnoremap <silent> gd  :call LanguageClient#textDocument_definition()<CR>
 
 " theme {{{
 set background=dark
+set termguicolors 
 let base16colorspace=256
 if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
