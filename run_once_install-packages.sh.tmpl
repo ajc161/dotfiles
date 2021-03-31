@@ -44,7 +44,6 @@ yay -S --needed \
   exa \
   ripgrep \
   fd \
-  dust \
   jq \
   restic \
   kubectl \
@@ -55,8 +54,13 @@ yay -S --needed \
   bat \
   yq \
   flux-go \
-  git-delta \
   rustup
+
+rustup toolchain install stable
+
+yay -S --needed \
+  dust \
+  git-delta
 
 yay -S --needed --asdeps \
   python-neovim
