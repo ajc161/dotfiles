@@ -1,0 +1,8 @@
+[kubernetes]
+disabled = false
+
+[memory_usage]
+disabled = false
+
+[status]
+disabled = false
