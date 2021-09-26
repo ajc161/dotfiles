@@ -148,11 +148,22 @@ nnoremap <silent> gd  :call LanguageClient#textDocument_definition()<CR>
 
 " theme {{{
 set background=dark
-set termguicolors 
+set termguicolors
 let base16colorspace=256
+
+function! s:base16_customize() abort
+  hi Normal guibg=NONE ctermbg=NONE
+endfunction
+
+augroup on_change_colorschema
+  autocmd!
+  autocmd ColorScheme * call s:base16_customize()
+augroup END
+
 if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
+
 let g:airline_theme='base16_vim'
 let g:airline_powerline_fonts = 1
 " }}}
