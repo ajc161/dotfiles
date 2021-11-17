@@ -1,2 +1,4 @@
-require('plugins')
-require('colors')
+vim.g.mapleader = " "
+
+require("plugins")
+require("colors")

@@ -1,21 +1,41 @@
-local packer, bootstrapped = require("plugins.packer-bootstrap")
+local packer, bootstrapped = require("plugins.packer-bootstrap")()
 
 packer.startup(function(use)
   -- Packer can manage itself
   use "wbthomason/packer.nvim"
 
-  --Plug Language extensions
-  use 'rust-lang/rust.vim'
+  -- Plug Language extensions
+  use "rust-lang/rust.vim"
 
   -- Colors
-  use 'chriskempson/base16-vim'
+  use "chriskempson/base16-vim"
 
-  -- My plugins here
-  -- use 'foo1/bar1.nvim'
-  -- use 'foo2/bar2.nvim'
+  -- File Browser
+  use {
+    "kyazdani42/nvim-tree.lua",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function() require"nvim-tree".setup {} end
+  }
+
+  -- Fuzzy Finder
+  use {
+    "nvim-telescope/telescope.nvim",
+    requires = { {"nvim-lua/plenary.nvim"} }
+  }
 
   -- Automatically sync plugins when bootstrapping packer
   if bootstrapped then
-    require('packer').sync()
+    require("packer").sync()
   end
 end)
+
+--vim.api.nvim_buf_set_keymap(0, "", "cc", "line(".") == 1 ? "cc" : "ggcc"", { noremap = true, expr = true })
+
+vim.api.nvim_set_keymap("n", "<Leader>n", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Leader>n", ":NvimTreeRefresh<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>N", ":NvimTreeFindFile<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<Leader>ff", [[<Cmd>lua require("telescope.builtin").find_files()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fg", [[<Cmd>lua require("telescope.builtin").live_grep()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fb", [[<Cmd>lua require("telescope.builtin").buffers()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>fh", [[<Cmd>lua require("telescope.builtin").help_tags()<CR>]], { noremap = true, silent = true })
