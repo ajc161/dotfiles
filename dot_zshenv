@@ -1,5 +1,5 @@
 typeset -U path
-path=("$HOME/.cargo/bin" "$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $path /snap/bin)
+path=("$HOME/.cargo/bin" "$HOME/.luarocks/bin" "$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $path /snap/bin)
 
 # common exports
 export EDITOR=nvim
