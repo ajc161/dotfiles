@@ -20,7 +20,7 @@ packer.startup(function(use)
   -- Fuzzy Finder
   use {
     "nvim-telescope/telescope.nvim",
-    requires = { {"nvim-lua/plenary.nvim"} }
+    requires = {{"nvim-lua/plenary.nvim"}}
   }
 
   -- Automatically sync plugins when bootstrapping packer
@@ -31,9 +31,9 @@ end)
 
 --vim.api.nvim_buf_set_keymap(0, "", "cc", "line(".") == 1 ? "cc" : "ggcc"", { noremap = true, expr = true })
 
-vim.api.nvim_set_keymap("n", "<Leader>n", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader><Leader>n", ":NvimTreeRefresh<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>N", ":NvimTreeFindFile<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>t", [[<Cmd>lua require("nvim-tree").toggle(false)<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>tt", [[<Cmd>lua require("nvim-tree").find_file(true)<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>T", [[<Cmd>lua require("nvim-tree").refresh()<CR>]], { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<Leader>ff", [[<Cmd>lua require("telescope.builtin").find_files()<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>fg", [[<Cmd>lua require("telescope.builtin").live_grep()<CR>]], { noremap = true, silent = true })

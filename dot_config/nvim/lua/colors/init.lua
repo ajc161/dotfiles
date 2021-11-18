@@ -1,6 +1,5 @@
-vim.cmd("set background=dark")
-vim.cmd("set termguicolors")
-vim.cmd("let base16colorspace=256")
+vim.o.background = "dark"
+vim.o.termguicolors = true
 
 local base16_background_path = vim.fn.expand "~/.vimrc_background"
 if vim.fn.filereadable(base16_background_path) then
