@@ -85,3 +85,6 @@ export HOMEBREW_GITHUB_API_TOKEN='{{ (index (bitwarden "item" "e10deb8d-0f6d-4fb
 source <(kubectl completion zsh)
 source <(helm completion zsh)
 source <(flux completion zsh) && compdef _flux flux
+
+# saml2aws
+command -v saml2aws &> /dev/null && eval "$(saml2aws --completion-script-zsh)"
