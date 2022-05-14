@@ -1,3 +1,7 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
 [kubernetes]
 disabled = false
 
@@ -6,3 +10,9 @@ disabled = false
 
 [status]
 disabled = false
+
+[sudo]
+disabled = false
+
+[time]
+disabled = true
