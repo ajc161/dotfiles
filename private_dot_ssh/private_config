@@ -1,0 +1,9 @@
+CanonicalizeHostname yes
+CanonicalDomains dgst.xyz
+
+Host *.dgst.xyz *.lan
+  User adam
+
+Host hoid.*
+  RemoteForward /run/user/1000/gnupg/S.gpg-agent ${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.extra
+  RemoteForward /run/user/1000/gnupg/S.gpg-agent.ssh ${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh
