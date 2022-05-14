@@ -4,8 +4,14 @@ packer.startup({function(use)
   -- Packer can manage itself
   use "wbthomason/packer.nvim"
 
-  -- Plug Language extensions
+  -- Language extensions
   use "rust-lang/rust.vim"
+  -- TODO
+  --use {
+  --  "simrat39/rust-tools.nvim",
+  --  module = "rust-tools",
+  --  requires = { "nvim-lua/plenary.nvim", "mfussenegger/nvim-dap" }
+  --}
 
   -- TODO vim-repeat
   -- TODO vim-fugitive
@@ -47,6 +53,15 @@ packer.startup({function(use)
           debounce_text_changes = 150,
         }
       }
+
+      lsp.pyright.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        flags = {
+          debounce_text_changes = 150,
+        }
+      }
+
     end
   }
 
@@ -156,6 +171,9 @@ packer.startup({function(use)
         "nvim-telescope/telescope-fzf-native.nvim",
         run = "make",
       },
+      {
+        'nvim-telescope/telescope-ui-select.nvim',
+      },
     },
     module = "telescope",
     cmd = "Telescope",
@@ -164,7 +182,20 @@ packer.startup({function(use)
     end,
     config = function() 
       local telescope = require("telescope")
+      telescope.setup = {
+        extensions = {
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown {
+              -- even more opts
+            }
+          }
+        }
+      }
+
+      print(vim.inspect(vim.ui.select))
       telescope.load_extension("fzf")
+      telescope.load_extension("ui-select")
+      print(vim.inspect(vim.ui.select))
     end
   }
 

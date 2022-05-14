@@ -78,9 +78,8 @@ M.nvimtree = function()
   local opts = { noremap=true, silent=true }
 
   set_keymap("n", "<Leader>t", [[<Cmd>lua require("nvim-tree").toggle(false)<CR>]], opts)
-  set_keymap("n", "<Leader>tt", [[<Cmd>lua require("nvim-tree").find_file(true)<CR>]], opts)
+  set_keymap("n", "<Leader>T", [[<Cmd>lua require("nvim-tree").find_file(true)<CR>]], opts)
   set_keymap("n", "<Leader>te", [[<Cmd>lua require("nvim-tree").focus()<CR>]], opts)
-  set_keymap("n", "<Leader>T", [[<Cmd>lua require("nvim-tree").refresh()<CR>]], opts)
 end
 
 M.bufferline = function()
