@@ -32,38 +32,51 @@ echo 'git-delta must be manually installed'
 echo 'rustup must be manually installed'
 echo 'dust must be install using cargo'
 {{ else if eq .chezmoi.osRelease.id "arch" -}}
-yay -S --needed \
+if ! command -v paru &> /dev/null
+then
+  sudo pacman -S --needed base-devel rustup
+  rustup toolchain install stable
+  BUILDDIR=$(mktemp -d)
+  git clone https://aur.archlinux.org/paru.git $BUILDDIR
+  pushd $BUILDDIR
+  makepkg -si
+  popd $BUILDDIR
+  rm -rf $BUILDDIR
+fi
+
+paru -S --needed \
+  aws-cli \
+  base-devel \
+  bat \
+  bitwarden-cli \
+  dust \
+  exa \
+  fd \
+  flux-bin \
+  fzf \
+  git \
+  git-delta \
+  gnupg \
+  helm \
+  jq \
+  kitty \
+  kubectl \
+  neovim \
+  restic \
+  ripgrep \
+  rustup \
+  starship \
+  vim \
+  yq \
   zsh \
   zsh-autosuggestions \
-  zsh-syntax-highlighting \
-  gnupg \
-  vim \
-  neovim \
-  fzf \
-  exa \
-  ripgrep \
-  fd \
-  jq \
-  restic \
-  kubectl \
-  helm \
-  aws-cli \
-  starship \
-  bitwarden-cli \
-  bat \
-  yq \
-  flux-bin \
-  rustup \
-  kitty
+  zsh-completions \
+  zsh-syntax-highlighting
 
-rustup toolchain install stable
-
-yay -S --needed \
-  dust \
-  git-delta
-
-yay -S --needed --asdeps \
-  python-neovim
+paru -S --asdeps --needed \
+  python-neovim \
+  wl-clipboard \
+  xsel
 {{ end -}}
 {{ else if eq .chezmoi.os "darwin" -}}
 brew install \
