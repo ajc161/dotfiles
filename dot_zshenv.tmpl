@@ -1,5 +1,5 @@
 typeset -U path
-path=("$HOME/.cargo/bin" "$HOME/.luarocks/bin" "$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $path /snap/bin)
+path=("$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $path)
 
 # common exports
 export EDITOR=nvim
@@ -12,7 +12,18 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
+# software versions
+[[ -x $(whence cargo) ]] && path=("$HOME/.cargo/bin" $path)
+[[ -x $(whence luarocks) ]] && path=("$HOME/.luarocks/bin" $path)
+[[ -x $(whence jenv) ]] && path=("$HOME/.jenv/bin" $path)
+[[ -x $(whence pyenv) ]] && eval "$(pyenv init --path)"
+
 # nix
 if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
   source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 fi
+{{ if eq .chezmoi.os "darwin" -}}
+
+# brew
+export HOMEBREW_GITHUB_API_TOKEN='{{ (index (bitwarden "item" "e10deb8d-0f6d-4fbd-8535-aad6000175a7").fields 0).value }}'
+{{ end -}}
