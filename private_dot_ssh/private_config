@@ -1,7 +1,11 @@
-CanonicalizeHostname yes
-CanonicalDomains dgst.xyz
+ControlMaster auto
+ControlPersist yes
+ControlPath ~/.ssh/sockets/socket-%r@%h:%p
 
-Host *.dgst.xyz *.lan
+Host honor.svc.lan cultivation.svc.lan yggdrasil.svc.lan
+  HostKeyAlgorithms ssh-rsa,ssh-dss
+
+Host *.lan *.shadesmar *.dgst.xyz
   User adam
 
 Host hoid.*
