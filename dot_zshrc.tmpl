@@ -1,10 +1,12 @@
 # history
 HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=1000000
+SAVEHIST=1000000
 
 # options
-setopt autocd beep extendedglob nomatch notify
+setopt EXTENDED_HISTORY HIST_FIND_NO_DUPS HIST_IGNORE_SPACE INC_APPEND_HISTORY_TIME
+setopt AUTO_CD AUTO_PUSHD PUSHD_MINUS
+setopt AUTO_MENU ALWAYS_TO_END
 cdpath=("$HOME/Projects")
 
 # vi mode
@@ -22,17 +24,17 @@ eval "$(starship init zsh)"
 alias cp='cp -i'
 alias df='df -h'
 alias free='free -m'
-alias ls='exa --classify --icons'
-alias ll='ls --long'
-alias la='ls --all'
-alias lla='ls --long --all'
-alias llg='ls --long --git'
+alias ls='lsd'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
 alias lt='ls --tree'
 [[ -x $(whence batcat) ]] && alias bat='batcat'
 alias cat='bat --paging=never'
 alias kssh='kitty +kitten ssh'
 
-alias wake_hoid="wol d4:5d:64:f1:42:03"
+alias wake_hoid="wol d4:5d:64:f1:42:02"
+alias rdp_wit="xfreerdp +clipboard /v:wit.lan /u:adam.j.cook@pm.me /sound"
 
 # restic
 export RESTIC_REPOSITORY='{{ (index (bitwarden "item" "restic").login.uris 0).uri }}'

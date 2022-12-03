@@ -2,8 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-{{ if eq .chezmoi.os "linux" -}}
-{{ if eq .chezmoi.osRelease.id "arch" -}}
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
 if ! command -v paru &> /dev/null
 then
   sudo pacman -S --needed base-devel rustup
@@ -17,13 +16,12 @@ then
 fi
 
 paru -S --needed \
-  aws-cli \
+  aws-cli-v2 \
   base-devel \
   bat \
   bitwarden-cli \
   bottom \
   dust \
-  exa \
   fd \
   flux-bin \
   fzf \
@@ -34,13 +32,14 @@ paru -S --needed \
   jq \
   kitty \
   kubectl \
+  lsd \
   neovim \
+  pyenv \
   ranger \
   restic \
   ripgrep \
   rustup \
   starship \
-  vim \
   yq \
   zsh \
   zsh-autosuggestions \
@@ -51,33 +50,36 @@ paru -S --asdeps --needed \
   python-neovim \
   wl-clipboard \
   xsel
-{{ end -}}
 {{ else if eq .chezmoi.os "darwin" -}}
 brew install \
+  awscli \
+  bat \
+  bitwarden-cli \
+  bottom \
+  dust \
+  fd \
+  fluxcd/tap/flux \
+  fzf \
+  git \
+  git-delta \
+  gnupg \
+  helm \
+  jq \
+  kitty \
+  kubectl \
+  lsd \
+  neovim \
+  pyenv \
+  ranger \
+  restic \
+  ripgrep \
+  rustup \
+  starship \
+  yq \
   zsh \
   zsh-autosuggestions \
-  zsh-syntax-highlighting \
-  gnupg \
-  vim \
-  neovim \
-  fzf \
-  exa \
-  ripgrep \
-  fd \
-  dust \
-  jq \
-  restic \
-  kubectl \
-  helm \
-  awscli \
-  starship \
-  bitwarden-cli \
-  bat \
-  yq \
-  fluxcd/tap/flux \
-  git-delta \
-  rustup \
-  kitty
+  zsh-completions \
+  zsh-syntax-highlighting
 
 pip3 install --user pynvim
 {{ end -}}
