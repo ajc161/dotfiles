@@ -20,9 +20,22 @@ vim.cmd([[
 ]])
 
 return packer.startup(function(use)
+  -- Packer can manage itself
   use "wbthomason/packer.nvim"
 
-  -- Library of Lua moules for NVIM
+  -- Language server things
+  use {
+    "williamboman/mason.nvim",
+    config = [[require("config.mason")]],
+    requires = {
+      "williamboman/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig",
+      "simrat39/rust-tools.nvim",
+      "simrat39/inlay-hints.nvim",
+    }
+  }
+
+  -- Library of moules
   use {
     "echasnovski/mini.nvim",
     config = [[require("config.mini")]],
@@ -33,19 +46,24 @@ return packer.startup(function(use)
     "nvim-telescope/telescope.nvim",
     config = [[require("config.telescope")]],
     requires = {
-      { "nvim-lua/plenary.nvim" }
+      "nvim-telescope/telescope-file-browser.nvim",
+      "nvim-telescope/telescope-packer.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
+      "nvim-lua/plenary.nvim",
     },
   }
 
-  -- File browser
+  -- Tree Sitter
   use {
-    "kyazdani42/nvim-tree.lua",
-    config = [[require("config.nvim-tree")]],
-    requires = {
-      "kyazdani42/nvim-web-devicons",
-    },
+    "nvim-treesitter/nvim-treesitter",
+    run = function()
+      local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+      ts_update()
+    end,
+    config = [[require("config.treesitter")]],
   }
 
+  -- Git status indicators
   use { "lewis6991/gitsigns.nvim" }
 
   -- Automatically set up your configuration after cloning packer.nvim
