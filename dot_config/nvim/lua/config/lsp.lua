@@ -10,7 +10,7 @@ mason_lspconfig.setup {
   ensure_installed = {
     "rust_analyzer",
     "sumneko_lua",
-  }
+  } 
 }
 
 mason_lspconfig.setup_handlers {
@@ -46,7 +46,7 @@ mason_lspconfig.setup_handlers {
       settings = {
         Lua = {
           runtime = {
-            -- Use LuaJIT with Neovim
+	    -- Use LuaJIT with Neovim
             version = "LuaJIT",
           },
           diagnostics = {
@@ -58,7 +58,7 @@ mason_lspconfig.setup_handlers {
             library = vim.api.nvim_get_runtime_file("", true),
           },
           hint = {
-            -- Turn on inlay hints
+	    -- Turn on inlay hints
             enable = true,
           },
           telemetry = {

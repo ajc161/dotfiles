@@ -1,20 +1,81 @@
-local telescope = require("telescope")
-local telescope_builtin = require("telescope.builtin")
+local ts = require("telescope")
+local dap = require("dap")
+local tsb = require("telescope.builtin")
+local wk = require("which-key")
 
-vim.keymap.set("n", "<leader>ff", function() telescope_builtin.find_files() end)
-vim.keymap.set("n", "<leader>fw", function() telescope_builtin.grep_string() end)
-vim.keymap.set("n", "<leader>fg", function() telescope_builtin.live_grep() end)
-vim.keymap.set("n", "<leader>fb", function() telescope_builtin.buffers() end)
-vim.keymap.set("n", "<leader>fh", function() telescope_builtin.help_tags() end)
-vim.keymap.set("n", "<leader>t", function() telescope.extensions.file_browser.file_browser() end)
+wk.setup {}
 
-vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition)
-vim.keymap.set("n", "K", vim.lsp.buf.hover)
-vim.keymap.set("n", "gD", vim.lsp.buf.implementation)
-vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help)
-vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition)
-vim.keymap.set("n", "gr", vim.lsp.buf.references)
-vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol)
-vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol)
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "ga", vim.lsp.buf.code_action)
+wk.register({
+  b = {
+    name = "Buffers",
+    a = { "<cmd>b#<cr>", "Alternate" },
+    h = { MiniBufremove.unshow, "Unshow" },
+    d = { MiniBufremove.delete, "Delete" },
+    w = { MiniBufremove.wipeout, "Wipeout" },
+  },
+  d = {
+    name = "DAP",
+    B = { function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, "Set breakpoint condition" },
+    P = { function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, "Set breakpoint condition" },
+    b = { dap.toggle_breakpoint, "Toggle breakpoint" },
+    c = { dap.continue, "Continue" },
+    l = { dap.run_last, "Run last" },
+    r = { dap.repl.toggle, "Toggle REPL" },
+    sO = { dap.step_out, "Step out" },
+    si = { dap.step_into, "Step into" },
+    so = { dap.step_over, "Step over" },
+  },
+  f = {
+    name = "Telescope search",
+    ["."] = { tsb.resume, "Resume" },
+    [":"] = { tsb.command_history, "Command history" },
+    ["/"] = { tsb.search_history, "Search history" },
+    b = { tsb.buffers, "Buffers" },
+    e = { ts.extensions.file_browser.file_browser, "File browser" },
+    f = { tsb.find_files, "Find files" },
+    g = { tsb.live_grep, "Live grep" },
+    h = { tsb.help_tags, "Help tags" },
+    j = { tsb.jumplist, "Jumplist" },
+    k = { tsb.keymaps, "Keymaps" },
+    m = { tsb.marks, "Marks" },
+    o = { tsb.oldfiles, "Old files" },
+    s = { tsb.spell_suggest, "Spell suggest" },
+    w = { tsb.grep_string, "Grep string" },
+  },
+  g = {
+    name = "Git",
+    C = { tsb.git_bcommits, "Git buffer commits" },
+    S = { tsb.git_stash, "Git stash" },
+    b = { tsb.git_branches, "Git branches" },
+    c = { tsb.git_commits, "Git commits" },
+    f = { tsb.git_files, "Git files" },
+    s = { tsb.git_status, "Git status" },
+  },
+  l = {
+    name = "LSP",
+    A = { vim.lsp.buf.code_action, "LSP code action" },
+    C = { tsb.lsp_outgoing_calls, "Git files" },
+    E = { tsb.diagnostics, "Diagnostics", buffer = 0 },
+    H = { vim.lsp.buf.signature_help, "LSP signature help" },
+    R = { vim.lsp.buf.rename, "LSP rename" },
+    S = { tsb.lsp_workspace_symbols, "Git files" },
+    c = { tsb.lsp_incoming_calls, "Git files" },
+    d = { tsb.lsp_definitions, "LSP definitions" },
+    e = { tsb.diagnostics, "Diagnostics" },
+    f = { vim.lsp.buf.format, "LSP format" },
+    h = { vim.lsp.buf.hover, "LSP hover" },
+    i = { tsb.lsp_implementations, "LSP implementations" },
+    r = { tsb.lsp_references, "LSP references" },
+    s = { tsb.lsp_document_symbols, "Git files" },
+    t = { tsb.lsp_type_definitions, "LSP type definitions" },
+  },
+  m = {
+    name = "Map",
+    c = { MiniMap.close, "Close" },
+    f = { MiniMap.toggle_focus, "Toggle focus" },
+    o = { MiniMap.open, "Open" },
+    r = { MiniMap.refresh, "Refresh" },
+    s = { MiniMap.toggle_side, "Toggle side" },
+    t = { MiniMap.toggle, "Toggle" },
+  },
+}, { prefix = "<leader>" })

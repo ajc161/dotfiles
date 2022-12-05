@@ -23,16 +23,26 @@ return packer.startup(function(use)
   -- Packer can manage itself
   use "wbthomason/packer.nvim"
 
-  -- Language server things
+  -- TODO https://github.com/nvim-neorg/neorg
+
+  -- Language server
   use {
-    "williamboman/mason.nvim",
-    config = [[require("config.mason")]],
+    "neovim/nvim-lspconfig",
+    config = [[require("config.lsp")]],
     requires = {
-      "williamboman/mason-lspconfig.nvim",
-      "neovim/nvim-lspconfig",
-      "simrat39/rust-tools.nvim",
-      "simrat39/inlay-hints.nvim",
-    }
+      { "simrat39/inlay-hints.nvim" },
+      { "simrat39/rust-tools.nvim" },
+      { "williamboman/mason.nvim", requires = { "williamboman/mason-lspconfig.nvim" } },
+    },
+  }
+
+  -- Debug protocol
+  use {
+    "mfussenegger/nvim-dap",
+    config = [[require("config.dap")]],
+    requires = {
+      "rcarriga/nvim-dap-ui",
+    },
   }
 
   -- Library of moules
@@ -64,7 +74,17 @@ return packer.startup(function(use)
   }
 
   -- Git status indicators
-  use { "lewis6991/gitsigns.nvim" }
+  use {
+    "lewis6991/gitsigns.nvim",
+    config = [[require("config.gitsigns")]],
+  }
+
+
+  -- Keymaps helper
+  use {
+    "folke/which-key.nvim",
+    config = [[require("mappings")]],
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
