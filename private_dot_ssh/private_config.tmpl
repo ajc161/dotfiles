@@ -1,0 +1,32 @@
+ControlMaster auto
+ControlPersist yes
+ControlPath ~/.ssh/sockets/%C
+
+CanonicalizeHostname yes
+{{- if contains "maxar" .chezmoi.fqdnHostname }}
+Include {{ .chezmoi.homeDir }}/.colima/ssh_config
+
+Match host="*.kestrel"
+  User acook
+  StrictHostKeyChecking no
+  ForwardAgent yes
+  UserKnownHostsFile /dev/null
+  ServerAliveInterval 30
+
+Match host="bastion*.rnd.kestrel"
+  DynamicForward 0.0.0.0:8722 
+
+Match host="bastion*.ops.kestrel"
+  DynamicForward 0.0.0.0:8822
+{{- else }}
+
+Host honor.svc.lan cultivation.svc.lan yggdrasil.svc.lan
+  HostKeyAlgorithms ssh-rsa,ssh-dss
+
+Host *.lan *.shadesmar *.dgst.xyz
+  User adam
+
+Host hoid.*
+  RemoteForward /run/user/1000/gnupg/S.gpg-agent ${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.extra
+  RemoteForward /run/user/1000/gnupg/S.gpg-agent.ssh ${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh
+{{- end }}
