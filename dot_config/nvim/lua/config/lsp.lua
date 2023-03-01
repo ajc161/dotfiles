@@ -8,9 +8,9 @@ inlay_hints.setup {}
 
 mason_lspconfig.setup {
   ensure_installed = {
+    "lua_ls",
     "rust_analyzer",
-    "sumneko_lua",
-  } 
+  }
 }
 
 mason_lspconfig.setup_handlers {
@@ -38,8 +38,8 @@ mason_lspconfig.setup_handlers {
       },
     }
   end,
-  ["sumneko_lua"] = function()
-    lspconfig.sumneko_lua.setup {
+  ["lua_ls"] = function()
+    lspconfig.lua_ls.setup {
       on_attach = function(client, bufnr)
         inlay_hints.on_attach(client, bufnr)
       end,

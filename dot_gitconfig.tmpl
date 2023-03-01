@@ -27,6 +27,7 @@
 
 [merge]
     conflictstyle = diff3
+    tool = nvimdiff
 
 [diff]
     colorMoved = default
@@ -41,16 +42,10 @@
     rebase = true
     ff = only
 
-[difftool "vimdiff"]
-    path = nvim
-
-[mergetool "vimdiff"]
-    path = nvim
-
 [credential "https://github.com"]
     helper = 
-    helper = !/usr/bin/gh auth git-credential
+    helper = !gh auth git-credential
 
 [credential "https://gist.github.com"]
     helper = 
-    helper = !/usr/bin/gh auth git-credential
+    helper = !gh auth git-credential

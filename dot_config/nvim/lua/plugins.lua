@@ -15,7 +15,7 @@ local packer = require("packer")
 vim.cmd([[
   augroup packer_user_config
     autocmd!
-    autocmd BufWritePost ~/.config/nvim/lua/plugins.lua source <afile> | PackerCompile
+    autocmd BufWritePost ~/.config/nvim/lua/*.lua source <afile> | PackerCompile
   augroup end
 ]])
 
@@ -45,10 +45,13 @@ return packer.startup(function(use)
     },
   }
 
-  -- Library of moules
+  -- File tree
   use {
-    "echasnovski/mini.nvim",
-    config = [[require("config.mini")]],
+    "nvim-tree/nvim-tree.lua",
+    requires = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = [[require("config.nvim-tree")]],
   }
 
   -- Finder
@@ -59,6 +62,7 @@ return packer.startup(function(use)
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-packer.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
+      "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-lua/plenary.nvim",
     },
   }
@@ -79,11 +83,16 @@ return packer.startup(function(use)
     config = [[require("config.gitsigns")]],
   }
 
-
   -- Keymaps helper
   use {
     "folke/which-key.nvim",
     config = [[require("mappings")]],
+  }
+
+  -- Color
+  use {
+    "folke/tokyonight.nvim",
+    config = [[require("config.tokyonight")]],
   }
 
   -- Automatically set up your configuration after cloning packer.nvim

@@ -13,17 +13,21 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
 fi
 
 # software versions
-[[ -x $(whence cargo) ]] && path=("$HOME/.cargo/bin" $path)
-[[ -x $(whence luarocks) ]] && path=("$HOME/.luarocks/bin" $path)
-[[ -x $(whence jenv) ]] && path=("$HOME/.jenv/bin" $path)
-[[ -x $(whence pyenv) ]] && eval "$(pyenv init --path)"
+export RUSTUP_HOME="$HOME/.rustup"
+export CARGO_HOME="$HOME/.cargo"
+export JENV_ROOT="$HOME/.jenv"
+export PYENV_ROOT="$HOME/.pyenv"
+
+[[ -x $(whence cargo) ]] && path=("$CARGO_HOME/bin" $path)
+[[ -x $(whence jenv) ]] && path=("$JENV_ROOT/bin" $path)
+[[ -x $(whence pyenv) ]] && path=("$PYENV_ROOT/bin" $path)
 
 # nix
 if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
   source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 fi
-{{ if eq .chezmoi.os "darwin" -}}
+{{- if contains "maxar" .chezmoi.fqdnHostname }}
 
-# brew
-export HOMEBREW_GITHUB_API_TOKEN='{{ (index (bitwarden "item" "e10deb8d-0f6d-4fbd-8535-aad6000175a7").fields 0).value }}'
-{{ end -}}
+export JDTLS_HOME="$HOME/.local/share/jdtls"
+export WORKSPACE="$HOME/Projects"
+{{- end }}

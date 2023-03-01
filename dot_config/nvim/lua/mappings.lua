@@ -3,15 +3,16 @@ local dap = require("dap")
 local tsb = require("telescope.builtin")
 local wk = require("which-key")
 
+-- set timeout for which-key
+vim.o.timeout = true
+vim.o.timeoutlen = 300
+
 wk.setup {}
 
 wk.register({
   b = {
     name = "Buffers",
     a = { "<cmd>b#<cr>", "Alternate" },
-    h = { MiniBufremove.unshow, "Unshow" },
-    d = { MiniBufremove.delete, "Delete" },
-    w = { MiniBufremove.wipeout, "Wipeout" },
   },
   d = {
     name = "DAP",
@@ -33,7 +34,7 @@ wk.register({
     b = { tsb.buffers, "Buffers" },
     e = { ts.extensions.file_browser.file_browser, "File browser" },
     f = { tsb.find_files, "Find files" },
-    g = { tsb.live_grep, "Live grep" },
+    g = { ts.extensions.live_grep_args.live_grep_args, "Live grep args" },
     h = { tsb.help_tags, "Help tags" },
     j = { tsb.jumplist, "Jumplist" },
     k = { tsb.keymaps, "Keymaps" },
@@ -68,14 +69,5 @@ wk.register({
     r = { tsb.lsp_references, "LSP references" },
     s = { tsb.lsp_document_symbols, "Git files" },
     t = { tsb.lsp_type_definitions, "LSP type definitions" },
-  },
-  m = {
-    name = "Map",
-    c = { MiniMap.close, "Close" },
-    f = { MiniMap.toggle_focus, "Toggle focus" },
-    o = { MiniMap.open, "Open" },
-    r = { MiniMap.refresh, "Refresh" },
-    s = { MiniMap.toggle_side, "Toggle side" },
-    t = { MiniMap.toggle, "Toggle" },
   },
 }, { prefix = "<leader>" })

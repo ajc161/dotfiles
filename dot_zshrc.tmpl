@@ -33,8 +33,18 @@ alias lt='ls --tree'
 alias cat='bat --paging=never'
 alias kssh='kitty +kitten ssh'
 
+{{- if contains "maxar" .chezmoi.fqdnHostname }}
+
+function s2a() {
+  export AWS_PROFILE=$1
+  export DEPLOY_ENV=${1##*-}
+  saml2aws -a $1 login ${@:2}
+}
+{{- else }}
+
 alias wake_hoid="wol d4:5d:64:f1:42:02"
 alias rdp_wit="xfreerdp +clipboard /v:wit.lan /u:adam.j.cook@pm.me /sound"
+{{- end }}
 
 # restic
 export RESTIC_REPOSITORY='{{ (index (bitwarden "item" "restic").login.uris 0).uri }}'
