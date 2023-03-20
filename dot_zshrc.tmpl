@@ -46,11 +46,11 @@ function s2a() {
 
 alias wake_hoid="wol d4:5d:64:f1:42:02"
 alias rdp_wit="xfreerdp +clipboard /v:wit.lan /u:adam.j.cook@pm.me /sound"
-{{- end }}
 
 # restic
 export RESTIC_REPOSITORY='{{ (index (bitwarden "item" "restic").login.uris 0).uri }}'
 export RESTIC_PASSWORD_COMMAND="bw get password restic"
+{{- end }}
 
 # fuzzy search
 if [ -f /usr/share/fzf/completion.zsh ]; then
@@ -125,11 +125,6 @@ _fzf_comprun() {
 
 # gnupg
 export GPG_TTY=$(tty)
-
-# software versions
-[[ -x $(whence jenv) ]] && eval "$(jenv init -)"
-[[ -x $(whence pyenv) ]] && eval "$(pyenv init -)"
-[[ -x $(whence luarocks) ]] && eval "$(luarocks path --no-bin)"
 
 # k8s
 [[ -x $(whence kubectl) ]] && source <(kubectl completion zsh)

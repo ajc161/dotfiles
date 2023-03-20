@@ -7,11 +7,3 @@ path=("$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $path)
 [[ -x $(whence jenv) ]] && eval "$(jenv init -)"
 [[ -x $(whence pyenv) ]] && eval "$(pyenv init -)"
 [[ -x $(whence luarocks) ]] && eval "$(luarocks path)"
-{{- if contains "maxar" .chezmoi.fqdnHostname }}
-
-function s2a() {
-  export AWS_PROFILE=$1
-  export DEPLOY_ENV=${1##*-}
-  saml2aws -a $1 login ${@:2}
-}
-{{- end }}
