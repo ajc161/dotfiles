@@ -17,6 +17,8 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.typescript" },
     { import = "lazyvim.plugins.extras.lang.json" },
     { import = "lazyvim.plugins.extras.ui.mini-animate" },
+    -- disable flit to prevent it messing with my macros
+    { "ggandor/flit.nvim", enabled = false },
     { import = "plugins" },
   },
   defaults = {

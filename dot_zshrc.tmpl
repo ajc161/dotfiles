@@ -58,11 +58,8 @@ if [ -f /usr/share/fzf/completion.zsh ]; then
 elif [ -f /usr/local/opt/fzf/shell/completion.zsh ]; then
   source /usr/local/opt/fzf/shell/completion.zsh
 fi
-
 if [ -f /usr/share/fzf/key-bindings.zsh ]; then
   source /usr/share/fzf/key-bindings.zsh
-elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-  source /usr/share/doc/fzf/examples/key-bindings.zsh
 elif [ -f /usr/local/opt/fzf/shell/key-bindings.zsh ]; then
   source /usr/local/opt/fzf/shell/key-bindings.zsh
 fi
@@ -78,6 +75,53 @@ if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; 
 elif [ -f /usr/local/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
   source /usr/local/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
+
+#export FZF_DEFAULT_COMMAND="fd --type file --strip-cwd-prefix --unrestricted --follow --color=always"
+export FZF_DEFAULT_COMMAND="fd --type file --strip-cwd-prefix --hidden --follow --exclude '.git' --color=always"
+export FZF_DEFAULT_OPTS="--ansi"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS="
+  --border --info=inline
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+export FZF_CTRL_R_OPTS="
+  --border --info=inline
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-/:toggle-preview'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+export FZF_COMPLETION_OPTS='--border --info=inline'
+
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
+    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
+    telnet|ssh)   fzf                                      "$@" ;;
+    unalias)      fzf                                      "$@" ;;
+    kill)         fzf                                      "$@" ;;
+    *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+  esac
+}
 
 # gnupg
 export GPG_TTY=$(tty)
