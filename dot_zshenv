@@ -1,0 +1,19 @@
+typeset -U path
+path=("/usr/local/bin" $path)
+
+# common exports
+export EDITOR=nvim
+export PAGER=less
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# gnupg
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
+
+# software versions
+[[ ( -x $(whence cargo) || -x "${HOME}/.cargo/bin/cargo" ) ]] \
+  && export CARGO_HOME="${HOME}/.cargo"
+[[ -x $(whence jenv) ]] && export JENV_ROOT="${HOME}/.jenv"
+[[ -x $(whence pyenv) ]] && export PYENV_ROOT="${HOME}/.pyenv"
