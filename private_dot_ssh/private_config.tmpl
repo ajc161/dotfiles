@@ -3,23 +3,12 @@ ControlPersist yes
 ControlPath ~/.ssh/sockets/%C
 
 CanonicalizeHostname yes
-{{- if contains "maxar" .chezmoi.fqdnHostname }}
+
+{{- if contains "cookbook" .chezmoi.fqdnHostname }}
 Include {{ .chezmoi.homeDir }}/.colima/ssh_config
 
-Match host="*.kestrel"
-  User acook
-  StrictHostKeyChecking no
-  ForwardAgent yes
-  UserKnownHostsFile /dev/null
-  ServerAliveInterval 30
-
-Match host="bastion*.rnd.kestrel"
-  DynamicForward 0.0.0.0:8722 
-
-Match host="bastion*.ops.kestrel"
-  DynamicForward 0.0.0.0:8822
+{{ (bitwarden "item" "Maxar SSH").notes }}
 {{- else }}
-
 Host honor.svc.lan cultivation.svc.lan yggdrasil.svc.lan
   HostKeyAlgorithms ssh-rsa,ssh-dss
 

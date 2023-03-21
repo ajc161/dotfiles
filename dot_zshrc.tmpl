@@ -35,7 +35,7 @@ alias icat="kitty +kitten icat"
 alias s='kitty +kitten ssh'
 alias hg="kitty +kitten hyperlinked_grep"
 
-{{- if contains "maxar" .chezmoi.fqdnHostname }}
+{{- if contains "cookbook" .chezmoi.fqdnHostname }}
 
 function s2a() {
   export AWS_PROFILE=$1

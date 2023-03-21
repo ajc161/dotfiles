@@ -1,7 +1,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
-
 command_timeout = 750
 
 [kubernetes]
@@ -12,7 +11,7 @@ disabled = false
 
 [sudo]
 disabled = false
-{{- if contains "maxar" .chezmoi.fqdnHostname }}
+{{- if contains "cookbook" .chezmoi.fqdnHostname }}
 
 [terraform]
 disabled = true
