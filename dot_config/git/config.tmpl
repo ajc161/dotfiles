@@ -4,6 +4,7 @@
 {{- end }}
 
 [core]
+    editor = nvim
     pager = delta
 
 [delta]
@@ -13,12 +14,6 @@
 
 [diff]
     colorMoved = default
-
-[gpg]
-# TODO switch to ssh on cookbook
-{{- if index . "signingkey" }}
-    format = openpgp
-{{- end }}
 
 [init]
     defaultBranch = main
@@ -36,12 +31,21 @@
 
 [push]
     autoSetupRemote = true
+    default = upstream
 {{- if index . "signingkey" }}
     gpgSign = if-asked
 {{- end }}
 
+[rebase]
+    autoSquash = true
+    autoStash = true
+
 [status]
     submoduleSummary = true
+
+[submodule]
+    recurse = true
+    propagateBranches = true
 
 [tag]
 {{- if index . "signingkey" }}

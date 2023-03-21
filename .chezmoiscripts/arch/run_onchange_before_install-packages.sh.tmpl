@@ -1,0 +1,68 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
+
+{{ $packages := list
+  "arc-gtk-theme"
+  "arc-icon-theme"
+  "archlinux-wallpaper"
+  "aws-cli-v2"
+  "base-devel"
+  "bat"
+  "bitwarden-cli"
+  "bottom"
+  "dust"
+  "elementary-icon-theme"
+  "fd"
+  "flux-bin"
+  "fzf"
+  "git"
+  "git-delta"
+  "github-cli"
+  "gnupg"
+  "helm"
+  "jq"
+  "kitty"
+  "kubectl"
+  "lazygit"
+  "lsd"
+  "luarocks"
+  "neovim-git"
+  "pyenv"
+  "python"
+  "ranger"
+  "restic"
+  "ripgrep"
+  "rustup"
+  "starship"
+  "ttf-firacode-nerd"
+  "yq"
+  "zsh"
+  "zsh-autosuggestions"
+  "zsh-completions"
+  "zsh-syntax-highlighting"
+-}}
+{{ $depPackages := list
+  "python-neovim"
+  "wl-clipboard"
+  "xsel"
+-}}
+
+#!/bin/bash
+set -eufo pipefail
+IFS=$'\n\t'
+
+if ! command -v paru &> /dev/null
+then
+  sudo pacman -Sy --needed base-devel rustup
+  rustup toolchain install stable
+  BUILDDIR=$(mktemp -d)
+  git clone https://aur.archlinux.org/paru.git $BUILDDIR
+  pushd $BUILDDIR
+  makepkg -si
+  popd $BUILDDIR
+  rm -rf $BUILDDIR
+fi
+
+paru -Sy --needed {{ $packages | join " " }}
+paru -S --asdeps --needed {{ $depPackages | join " " }}
+
+{{ end -}}

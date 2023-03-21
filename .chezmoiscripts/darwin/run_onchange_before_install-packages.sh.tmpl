@@ -1,0 +1,59 @@
+{{ if eq .chezmoi.os "darwin" -}}
+
+
+{{ $packages := list
+  "awscli"
+  "bat"
+  "bitwarden-cli"
+  "bottom"
+  "dust"
+  "fd"
+  "fluxcd/tap/flux"
+  "font-fira-code-nerd-font"
+  "fzf"
+  "gh"
+  "git"
+  "git-delta"
+  "gnupg"
+  "helm"
+  "jq"
+  "kitty"
+  "kubectl"
+  "lazygit"
+  "lsd"
+  "luarocks"
+  "pyenv"
+  "python"
+  "ranger"
+  "restic"
+  "ripgrep"
+  "rustup"
+  "starship"
+  "yq"
+  "zsh"
+  "zsh-autosuggestions"
+  "zsh-completions"
+  "zsh-syntax-highlighting"
+-}}
+{{ $headPackages := list
+  "neovim"
+-}}
+{{ $pipUserPackages := list
+  "pynvim"
+-}}
+
+#!/bin/bash
+set -eufo pipefail
+IFS=$'\n\t'
+
+if ! command -v brew &> /dev/null
+then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  brew tap homebrew/cask-fonts
+fi
+
+brew install {{ $packages | join " " }}
+brew install --head {{ $headPackages | join " " }}
+pip3 install --user {{ $pipUserPackages | join " " }}
+
+{{ end -}}
