@@ -1,8 +1,6 @@
 {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
 
 {{ $packages := list
-  "arc-gtk-theme"
-  "arc-icon-theme"
   "archlinux-wallpaper"
   "aws-cli-v2"
   "base-devel"
@@ -10,7 +8,6 @@
   "bitwarden-cli"
   "bottom"
   "dust"
-  "elementary-icon-theme"
   "fd"
   "flux-bin"
   "fzf"
