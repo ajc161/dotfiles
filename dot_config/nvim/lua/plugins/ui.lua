@@ -1,5 +1,11 @@
 return {
   {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "catppuccin",
+    },
+  },
+  {
     "akinsho/bufferline.nvim",
     dependencies = { "catppuccin" },
     opts = {
