@@ -9,8 +9,21 @@ Host honor.svc.lan cultivation.svc.lan yggdrasil.svc.lan
   HostKeyAlgorithms ssh-rsa,ssh-dss
 
 Host hoid.lan
+  Hostname 172.18.10.7
 
-Host *.lan *.shadesmar *.dgst.xyz
+Host hoid.nord
+  Hostname adam.cook-andes.nord
+
+Host kaladin.lan
+  Hostname 172.18.1.5
+
+Host kaladin.nord
+  Hostname adam.cook-everest.nord
+
+Host kaladin.*
+  User root
+
+Host *.lan *.nord *.dgst.xyz
   User adam
 
 Host hoid.*
