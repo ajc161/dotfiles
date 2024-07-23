@@ -12,7 +12,7 @@
 # Whether to use dot markers rather than braille.
 #dot_marker = false
 # The update rate of the application.
-#rate = 1000
+#rate = "1s"
 # Whether to put the CPU legend to the left.
 #left_legend = false
 # Whether to set CPU% on a process to be based on the total CPU or just current usage.
@@ -35,7 +35,7 @@
 #temperature_type = "fahrenheit"
 #temperature_type = "celsius"
 # The default time interval (in milliseconds).
-#default_time_value = 60000
+#default_time_value = "60s"
 # The time delta on each zoom in/out action (in milliseconds).
 #time_delta = 15000
 # Hides the time scale.
@@ -75,8 +75,15 @@
 #disable_advanced_kill = false
 # Shows GPU(s) memory
 #enable_gpu_memory = false
+# Shows cache and buffer memory
+#enable_cache_memory = false
 # How much data is stored at once in terms of time.
 #retention = "10m"
+
+# These are flags around the process widget.
+
+#[processes]
+#columns = ["PID", "Name", "CPU%", "Mem%", "R/s", "W/s", "T.Read", "T.Write", "User", "State"]
 
 # These are all the components that support custom theming.  Note that colour support
 # will depend on terminal support.

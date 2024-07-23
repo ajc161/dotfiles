@@ -1,68 +1,60 @@
+{{ if index . "signingkey" -}}
 [commit]
-{{- if index . "signingkey" }}
-    gpgSign = true
-{{- end }}
+	gpgSign = true
 
+{{ end -}}
 [core]
-    editor = nvim
-    pager = delta
+	editor = nvim
+	pager = delta
+
+[credential "https://github.com"]
+	helper =
+	helper = !/usr/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/usr/bin/gh auth git-credential
 
 [delta]
-    light = false
-    line-numbers = true
-    navigate = true
+	line-numbers = true
+	navigate = true
 
 [diff]
-    colorMoved = default
+	colorMoved = default
 
 [init]
-    defaultBranch = main
+	defaultBranch = main
 
 [interactive]
-    diffFilter = delta --color-only
+	diffFilter = delta --color-only
 
 [merge]
-    conflictstyle = diff3
-    tool = nvimdiff
+	conflictstyle = diff3
+	tool = nvimdiff
 
 [pull]
-    rebase = true
-    ff = only
+	ff = only
+	rebase = true
 
 [push]
-    autoSetupRemote = true
-    default = upstream
+	autoSetupRemote = true
+	default = upstream
 {{- if index . "signingkey" }}
-    gpgSign = if-asked
+	gpgSign = if-asked
 {{- end }}
 
 [rebase]
-    autoSquash = true
-    autoStash = true
+	autoSquash = true
+	autoStash = true
 
-[status]
-    submoduleSummary = true
-
-[submodule]
-    recurse = true
-    propagateBranches = true
-
+{{ if index . "signingkey" -}}
 [tag]
-{{- if index . "signingkey" }}
-    gpgSign = true
-{{- end }}
+	gpgSign = true
 
+{{ end -}}
 [user]
-    name = Adam Cook
-    email = {{ .email }}
+	email = adam.cook@danti.ai
+	name = Adam Cook
 {{- if index . "signingkey" }}
-    signingkey = {{ .signingkey }}
+	signingkey = {{ .signingkey }}
 {{- end }}
-
-[credential "https://github.com"]
-    helper = 
-    helper = !gh auth git-credential
-
-[credential "https://gist.github.com"]
-    helper = 
-    helper = !gh auth git-credential

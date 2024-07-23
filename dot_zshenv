@@ -1,6 +1,3 @@
-typeset -U path
-path=("/usr/local/bin" $path)
-
 # common exports
 export EDITOR=nvim
 export PAGER=less
@@ -15,5 +12,3 @@ fi
 # software versions
 [[ ( -x $(whence cargo) || -x "${HOME}/.cargo/bin/cargo" ) ]] \
   && export CARGO_HOME="${HOME}/.cargo"
-[[ -x $(whence jenv) ]] && export JENV_ROOT="${HOME}/.jenv"
-[[ -x $(whence pyenv) ]] && export PYENV_ROOT="${HOME}/.pyenv"

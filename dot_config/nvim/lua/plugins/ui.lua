@@ -1,28 +1,20 @@
 return {
+  -- Configure LazyVim to load catppuccin colorscheme
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    opts = {
+      transparent_background = true,
+      integrations = {
+        dap = true,
+        dap_ui = true,
+      },
+    },
+  },
   {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "catppuccin",
     },
-  },
-  {
-    "akinsho/bufferline.nvim",
-    dependencies = { "catppuccin" },
-    opts = {
-      highlights = require("catppuccin.groups.integrations.bufferline").get(),
-    },
-  },
-  {
-    "goolord/alpha-nvim",
-    opts = function(_, opts)
-      opts.section.header.val = {
-        [[ ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ]],
-        [[ ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ]],
-        [[ ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ]],
-        [[ ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ]],
-        [[ ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ]],
-        [[ ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ]],
-      }
-    end,
   },
 }

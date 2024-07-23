@@ -9,7 +9,7 @@
   "bottom"
   "dust"
   "fd"
-  "flux-bin"
+  "fluxcd"
   "fzf"
   "git"
   "git-delta"
@@ -22,13 +22,13 @@
   "lazygit"
   "lsd"
   "luarocks"
-  "neovim-git"
-  "pyenv"
+  "neovim"
   "python"
   "ranger"
   "restic"
   "ripgrep"
   "rustup"
+  "rye"
   "starship"
   "ttf-firacode-nerd"
   "yq"
@@ -59,7 +59,6 @@ then
   rm -rf $BUILDDIR
 fi
 
-paru -Sy --needed {{ $packages | join " " }}
+paru -Syu --needed {{ $packages | join " " }}
 paru -S --asdeps --needed {{ $depPackages | join " " }}
-
 {{ end -}}

@@ -31,17 +31,10 @@ alias lla='ls -la'
 alias lt='ls --tree'
 [[ -x $(whence batcat) ]] && alias bat='batcat'
 alias cat='bat --paging=never'
-alias icat="kitty +kitten icat"
-alias s='kitty +kitten ssh'
-alias hg="kitty +kitten hyperlinked_grep"
 
-{{- if contains "cookbook" .chezmoi.fqdnHostname }}
+{{- if contains "endeavour" .chezmoi.fqdnHostname }}
 
-function s2a() {
-  export AWS_PROFILE=$1
-  export DEPLOY_ENV=${1##*-}
-  saml2aws -a $1 login ${@:2}
-}
+export AWS_PROFILE=${AWS_PROFILE:-test-pu}
 {{- else }}
 
 alias wake_hoid="wol d4:5d:64:f1:42:02"
@@ -76,8 +69,7 @@ elif [ -f /usr/local/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
   source /usr/local/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-#export FZF_DEFAULT_COMMAND="fd --type file --strip-cwd-prefix --unrestricted --follow --color=always"
-export FZF_DEFAULT_COMMAND="fd --type file --strip-cwd-prefix --hidden --follow --exclude '.git' --color=always"
+export FZF_DEFAULT_COMMAND="fd --type file --strip-cwd-prefix --unrestricted --follow --color=always"
 export FZF_DEFAULT_OPTS="--ansi"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="
@@ -130,4 +122,6 @@ export GPG_TTY=$(tty)
 [[ -x $(whence kubectl) ]] && source <(kubectl completion zsh)
 [[ -x $(whence helm) ]] && source <(helm completion zsh)
 [[ -x $(whence flux) ]] && source <(flux completion zsh) && compdef _flux flux
-[[ -x $(whence saml2aws) ]] && eval "$(saml2aws --completion-script-zsh)"
+
+# software versions
+[[ -x $(whence direnv) ]] && eval "$(direnv hook zsh)"

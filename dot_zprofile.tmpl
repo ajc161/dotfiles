@@ -2,7 +2,4 @@ typeset -U path
 path=("$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $path)
 
 # software versions
-[[ ( -x $(whence cargo)  || -x "${CARGO_HOME}/bin/cargo" ) ]] \
-  && path=("${CARGO_HOME}/bin" $path)
-[[ -x $(whence jenv) ]] && eval "$(jenv init -)"
-[[ -x $(whence pyenv) ]] && eval "$(pyenv init -)"
+[[ ( -x "${CARGO_HOME}/bin/cargo" ) ]] && path=("${CARGO_HOME}/bin" $path)
