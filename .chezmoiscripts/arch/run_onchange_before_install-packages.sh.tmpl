@@ -1,48 +1,4 @@
 {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") -}}
-
-{{ $packages := list
-  "archlinux-wallpaper"
-  "aws-cli-v2"
-  "base-devel"
-  "bat"
-  "bitwarden-cli"
-  "bottom"
-  "dust"
-  "fd"
-  "fluxcd"
-  "fzf"
-  "git"
-  "git-delta"
-  "github-cli"
-  "gnupg"
-  "helm"
-  "jq"
-  "kitty"
-  "kubectl"
-  "lazygit"
-  "lsd"
-  "luarocks"
-  "neovim"
-  "python"
-  "ranger"
-  "restic"
-  "ripgrep"
-  "rustup"
-  "rye"
-  "starship"
-  "ttf-firacode-nerd"
-  "yq"
-  "zsh"
-  "zsh-autosuggestions"
-  "zsh-completions"
-  "zsh-syntax-highlighting"
--}}
-{{ $depPackages := list
-  "python-neovim"
-  "wl-clipboard"
-  "xsel"
--}}
-
 #!/bin/bash
 set -eufo pipefail
 IFS=$'\n\t'
@@ -59,6 +15,13 @@ then
   rm -rf $BUILDDIR
 fi
 
-paru -Syu --needed {{ $packages | join " " }}
-paru -S --asdeps --needed {{ $depPackages | join " " }}
+paru -Syu --needed \
+{{- range $i, $v := .packages.arch.explicit }}
+  {{- if $i }} \{{ end }}{{ . | nindent 2 -}}
+{{- end }}
+
+paru -S --asdeps --needed \
+{{- range $i, $v := .packages.arch.deps }}
+  {{- if $i }} \{{ end }}{{ . | nindent 2 -}}
+{{- end }}
 {{ end -}}
