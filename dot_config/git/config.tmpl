@@ -53,7 +53,7 @@
 
 {{ end -}}
 [user]
-	email = adam.cook@danti.ai
+	email = {{ .email }}
 	name = Adam Cook
 {{- if index . "signingkey" }}
 	signingkey = {{ .signingkey }}

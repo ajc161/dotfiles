@@ -2,6 +2,7 @@
 export EDITOR=nvim
 export PAGER=less
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANROFFOPT="-c"
 
 # gnupg
 unset SSH_AGENT_PID

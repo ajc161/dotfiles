@@ -5,6 +5,7 @@ command_timeout = 750
 
 # Sets user-defined palette
 palette = "catppuccin_mocha"
+{{- if contains "endeavour" .chezmoi.fqdnHostname }}
 
 [aws.region_aliases]
 us-east-1 = 'east'
@@ -15,21 +16,6 @@ test-pu = 'tst'
 stage-pu = 'stg'
 prod-pu = 'prd'
 gov-pu = 'gov'
-
-[container]
-disabled = true
-
-[direnv]
-disabled = false
-
-[docker_context]
-only_with_files = false
-symbol = " "
-
-[kubernetes]
-disabled = false
-style = "bold sapphire"
-symbol = "󱃾 "
 
 [[kubernetes.contexts]]
 context_pattern = "test-.*"
@@ -48,6 +34,22 @@ style = "bold red"
 context_pattern = "gov-.*"
 context_alias = "gov"
 style = "bold red"
+{{- end }}
+
+[container]
+disabled = true
+
+[direnv]
+disabled = false
+
+[docker_context]
+only_with_files = false
+symbol = " "
+
+[kubernetes]
+disabled = false
+style = "bold sapphire"
+symbol = "󱃾 "
 
 [memory_usage]
 disabled = false
