@@ -39,10 +39,6 @@ export AWS_PROFILE=${AWS_PROFILE:-test-pu}
 
 alias wake_hoid="wol d4:5d:64:f1:42:02"
 alias wake_hoid_remote="ssh -J kaladin.nord adam@172.18.1.1 sudo etherwake 'd4:5d:64:f1:42:02'"
-
-# restic
-export RESTIC_REPOSITORY='{{ (index (bitwarden "item" "restic").login.uris 0).uri }}'
-export RESTIC_PASSWORD_COMMAND="bw get password restic"
 {{- end }}
 
 # fuzzy search
