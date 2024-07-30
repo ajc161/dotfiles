@@ -37,3 +37,40 @@ explicit = [
   "zsh-syntax-highlighting",
 ]
 deps = ["python-neovim", "wl-clipboard", "xsel"]
+
+[packages.darwin]
+brews = [
+   "awscli",
+   "bat",
+   "bitwarden-cli",
+   "bottom",
+   "chezmoi",
+   "dust",
+   "fd",
+   "fluxcd/tap/flux",
+   "gh",
+   "git",
+   "git-delta",
+   "gnupg",
+   "helm",
+   "jq",
+   "kubectl",
+   "lazygit",
+   "lsd",
+   "luarocks",
+   "neovim",
+   "ranger",
+   "ripgrep",
+   "rustup",
+   "rye",
+   "starship",
+   "yq",
+   "zsh",
+   "zsh-autosuggestions",
+   "zsh-completions",
+   "zsh-syntax-highlighting",
+]
+casks = [
+   "font-fira-code-nerd-font",
+   "wezterm",
+]
