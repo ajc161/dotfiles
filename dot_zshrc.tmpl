@@ -14,6 +14,9 @@ bindkey -v
 
 # completion
 zstyle :compinstall filename "$HOME/.zshrc"
+if whence brew; then
+  fpath=($(brew --prefix)/share/zsh-completions $fpath)
+fi
 autoload -Uz compinit
 compinit
 
@@ -44,25 +47,25 @@ alias wake_hoid_remote="ssh -J kaladin.nord adam@172.18.1.1 sudo etherwake 'd4:5
 # fuzzy search
 if [ -f /usr/share/fzf/completion.zsh ]; then
   source /usr/share/fzf/completion.zsh
-elif [ -f /usr/local/opt/fzf/shell/completion.zsh ]; then
-  source /usr/local/opt/fzf/shell/completion.zsh
+elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/opt/fzf/shell/completion.zsh ]; then
+  source "$(brew --prefix)"/opt/fzf/shell/completion.zsh
 fi
 if [ -f /usr/share/fzf/key-bindings.zsh ]; then
   source /usr/share/fzf/key-bindings.zsh
-elif [ -f /usr/local/opt/fzf/shell/key-bindings.zsh ]; then
-  source /usr/local/opt/fzf/shell/key-bindings.zsh
+elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/opt/fzf/shell/key-bindings.zsh ]; then
+  source "$(brew --prefix)"/opt/fzf/shell/key-bindings.zsh
 fi
 
 # fish like
 if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
   source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-elif [ -f /usr/local/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-  source /usr/local/zsh-autosuggestions/zsh-autosuggestions.zsh
+elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+  source "$(brew --prefix)"/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
   source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-elif [ -f /usr/local/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-  source /usr/local/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+  source "$(brew --prefix)"/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 export FZF_DEFAULT_COMMAND="fd --type file --strip-cwd-prefix --unrestricted --follow --color=always"
