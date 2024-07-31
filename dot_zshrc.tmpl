@@ -14,7 +14,7 @@ bindkey -v
 
 # completion
 zstyle :compinstall filename "$HOME/.zshrc"
-if whence brew; then
+if [[ -x $(whence brew) ]]; then
   fpath=($(brew --prefix)/share/zsh-completions $fpath)
 fi
 autoload -Uz compinit
