@@ -45,16 +45,7 @@ alias wake_hoid_remote="ssh -J kaladin.nord adam@172.18.1.1 sudo etherwake 'd4:5
 {{- end }}
 
 # fuzzy search
-if [ -f /usr/share/fzf/completion.zsh ]; then
-  source /usr/share/fzf/completion.zsh
-elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/opt/fzf/shell/completion.zsh ]; then
-  source "$(brew --prefix)"/opt/fzf/shell/completion.zsh
-fi
-if [ -f /usr/share/fzf/key-bindings.zsh ]; then
-  source /usr/share/fzf/key-bindings.zsh
-elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/opt/fzf/shell/key-bindings.zsh ]; then
-  source "$(brew --prefix)"/opt/fzf/shell/key-bindings.zsh
-fi
+[[ -x $(whence fzf) ]] && source <(fzf --zsh)
 
 # fish like
 if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
