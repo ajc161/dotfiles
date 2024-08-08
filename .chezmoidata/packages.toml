@@ -14,7 +14,7 @@ explicit = [
   "git-delta",
   "github-cli",
   "gnupg",
-  "golang",
+  "go",
   "helm",
   "jq",
   "k9s",
