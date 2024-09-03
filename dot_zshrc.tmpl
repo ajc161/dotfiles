@@ -21,19 +21,25 @@ autoload -Uz compinit
 compinit
 
 # starship
-eval "$(starship init zsh)"
+if [[ -x $(whence starship) ]]; then
+  eval "$(starship init zsh)"
+fi
 
 # aliases
 alias cp='cp -i'
 alias df='df -h'
 alias free='free -m'
-alias ls='lsd --hyperlink=auto'
-alias l='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
-[[ -x $(whence batcat) ]] && alias bat='batcat'
-alias cat='bat --paging=never'
+if [[ -x $(whence lsd) ]]; then
+  alias ls='lsd --hyperlink=auto'
+  alias l='ls -l'
+  alias la='ls -a'
+  alias lla='ls -la'
+  alias lt='ls --tree'
+fi
+if [[ -x $(whence batcat) ]]; then
+  alias bat='batcat'
+  alias cat='bat -pp'
+fi
 
 {{- if contains "endeavour" .chezmoi.fqdnHostname }}
 
@@ -44,66 +50,31 @@ alias wake_hoid="wol d4:5d:64:f1:42:02"
 alias wake_hoid_remote="ssh -J kaladin.nord adam@172.18.1.1 sudo etherwake 'd4:5d:64:f1:42:02'"
 {{- end }}
 
-# fuzzy search
-[[ -x $(whence fzf) ]] && source <(fzf --zsh)
-
-# fish like
-if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-  source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-  source "$(brew --prefix)"/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-elif [ -x "$(whence brew)" ] && [ -f "$(brew --prefix)"/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-  source "$(brew --prefix)"/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+LOCAL_PREFIX=/usr/local
+if [[ -x $(whence brew) ]]; then
+  LOCAL_PREFIX="$(brew --prefix)"
 fi
 
-export FZF_DEFAULT_COMMAND="fd --type file --strip-cwd-prefix --unrestricted --follow --color=always"
-export FZF_DEFAULT_OPTS="--ansi"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="
-  --border --info=inline
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-export FZF_CTRL_R_OPTS="
-  --border --info=inline
-  --preview 'echo {}' --preview-window up:3:hidden:wrap
-  --bind 'ctrl-/:toggle-preview'
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
-  --color header:italic
-  --header 'Press CTRL-Y to copy command into clipboard'"
-export FZF_COMPLETION_OPTS='--border --info=inline'
+if [[ -f "${LOCAL_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+  source "${LOCAL_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
+if [[ -f "${LOCAL_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+  source "${LOCAL_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
+if [[ -f "${LOCAL_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]]; then
+  source "${LOCAL_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+fi
 
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
+# key bindings for substring history search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
-}
-
-# Advanced customization of fzf options via _fzf_comprun function
-# - The first argument to the function is the name of the command.
-# - You should make sure to pass the rest of the arguments to fzf.
-_fzf_comprun() {
-  local command=$1
-  shift
-
-  case "$command" in
-    cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
-    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
-    telnet|ssh)   fzf                                      "$@" ;;
-    unalias)      fzf                                      "$@" ;;
-    kill)         fzf                                      "$@" ;;
-    *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
-  esac
-}
+# fzf for history search
+if [[ -x $(whence fzf) ]]; then
+  source <(fzf --zsh)
+fi
 
 # gnupg
 export GPG_TTY=$(tty)

@@ -1,9 +1,0 @@
-# common exports
-export EDITOR=nvim
-export PAGER=less
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export MANROFFOPT="-c"
-
-# software versions
-[[ ( -x $(whence cargo) || -x "${HOME}/.cargo/bin/cargo" ) ]] \
-  && export CARGO_HOME="${HOME}/.cargo"
