@@ -1,0 +1,23 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.zhistfile
+HISTSIZE=10000
+SAVEHIST=10000
+setopt autocd extendedglob notify
+bindkey -v
+# End of lines configured by zsh-newuser-install
+
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/adam/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# Load Starhhip shell
+eval "$(starship init zsh)"
+
+# Aliases
+alias ls='eza --classify --icons --git --group-directories-first'
+alias ll='ls --long --all'
+alias lx='ls --extended --all'
+alias lt='ls --tree'
