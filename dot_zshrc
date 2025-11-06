@@ -1,23 +1,22 @@
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.zhistfile
-HISTSIZE=10000
-SAVEHIST=10000
+# Set some options
 setopt autocd extendedglob notify
+
+# Use vi mode
 bindkey -v
-# End of lines configured by zsh-newuser-install
 
-# The following lines were added by compinstall
+# Configure completion
 zstyle :compinstall filename '/home/adam/.zshrc'
-
 autoload -Uz compinit
 compinit
-# End of lines added by compinstall
 
 # Use bat as man pager
 export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
 
 # Load Starhhip shell
 eval "$(starship init zsh)"
+
+# Load Atuin history
+eval "$(atuin init zsh)"
 
 # Aliases
 alias ls='eza --classify --icons --git --group-directories-first'
