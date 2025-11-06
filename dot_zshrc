@@ -13,6 +13,9 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
+# Use bat as man pager
+export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
+
 # Load Starhhip shell
 eval "$(starship init zsh)"
 
@@ -21,3 +24,4 @@ alias ls='eza --classify --icons --git --group-directories-first'
 alias ll='ls --long --all'
 alias lx='ls --extended --all'
 alias lt='ls --tree'
+alias cat='bat --paging=never'
