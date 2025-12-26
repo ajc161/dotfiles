@@ -21,6 +21,9 @@ eval "$(tv init zsh)"
 # Load Atuin history
 eval "$(atuin init zsh)"
 
+# Load Krew plugins
+path=("${KREW_ROOT:-$HOME/.krew}/bin" $path)
+
 # Aliases
 alias ls='eza --classify --icons --git --group-directories-first'
 alias ll='ls --long --all'
