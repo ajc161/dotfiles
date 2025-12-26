@@ -24,6 +24,9 @@ eval "$(atuin init zsh)"
 # Load Krew plugins
 path=("${KREW_ROOT:-$HOME/.krew}/bin" $path)
 
+# Add NPM global packages to path
+path=("~/.npm-global/bin" $path)
+
 # Aliases
 alias ls='eza --classify --icons --git --group-directories-first'
 alias ll='ls --long --all'
