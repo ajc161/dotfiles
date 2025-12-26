@@ -15,6 +15,9 @@ export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08
 # Load Starhhip shell
 eval "$(starship init zsh)"
 
+# Load Television integration
+eval "$(tv init zsh)"
+
 # Load Atuin history
 eval "$(atuin init zsh)"
 
