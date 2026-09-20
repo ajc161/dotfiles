@@ -1,8 +1,3 @@
-# CachyOS integration (if on CachyOS / Linux)
-if [[ -f /usr/share/cachyos-zsh-config/cachyos-config.zsh ]]; then
-  source /usr/share/cachyos-zsh-config/cachyos-config.zsh
-fi
-
 # Shell options
 setopt autocd extendedglob notify
 
@@ -12,6 +7,21 @@ bindkey -v
 # Completion
 autoload -Uz compinit
 compinit
+
+# Plugin paths (Linux / CachyOS and Apple Silicon macOS)
+plugin_dirs=(
+  "/usr/share/zsh/plugins"
+  "/opt/homebrew/share"
+)
+
+for plugin in zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search; do
+  for dir in "${plugin_dirs[@]}"; do
+    if [[ -f "$dir/$plugin/$plugin.zsh" ]]; then
+      source "$dir/$plugin/$plugin.zsh"
+      break
+    fi
+  done
+done
 
 # Bat pager & AWS pager
 if command -v bat &>/dev/null; then
