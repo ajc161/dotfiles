@@ -2,8 +2,6 @@
 #!/bin/bash
 set -euo pipefail
 
-echo "==> [dotfiles] Installing dependencies for Linux (Arch / CachyOS)..."
-
 # Core packages required by dotfiles configurations
 PACKAGES=(
   atuin
@@ -44,29 +42,35 @@ OPTIONAL_PACKAGES=(
   zoxide       # yazi & shell: historical directory navigation
 )
 
-INSTALLER=""
+# Check which packages are missing before invoking package manager / sudo
+missing_packages=()
+for pkg in "${PACKAGES[@]}" "${OPTIONAL_PACKAGES[@]}"; do
+  if ! pacman -Q "$pkg" &>/dev/null; then
+    missing_packages+=("$pkg")
+  fi
+done
+
+if [ ${#missing_packages[@]} -eq 0 ]; then
+  echo "==> [dotfiles] All packages already installed."
+  exit 0
+fi
+
+echo "==> [dotfiles] Installing missing packages: ${missing_packages[*]}"
+
 if command -v paru &>/dev/null; then
-  INSTALLER="paru -S --needed --noconfirm"
+  paru -S --needed --noconfirm "${missing_packages[@]}"
 elif command -v pacman &>/dev/null; then
-  INSTALLER="sudo pacman -S --needed --noconfirm"
+  sudo pacman -S --needed --noconfirm "${missing_packages[@]}"
 else
   echo "Error: Neither paru nor pacman found." >&2
   exit 1
 fi
-
-echo "Installing core packages..."
-$INSTALLER "${PACKAGES[@]}"
-
-echo "Installing optional packages (previews & utilities)..."
-$INSTALLER "${OPTIONAL_PACKAGES[@]}"
 
 echo "==> [dotfiles] All Linux packages are installed."
 
 {{ else if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 set -euo pipefail
-
-echo "==> [dotfiles] Installing dependencies for macOS via Homebrew..."
 
 if ! command -v brew &>/dev/null; then
   echo "Homebrew not found. Please install Homebrew first: https://brew.sh"
@@ -116,14 +120,37 @@ BREW_CASKS=(
   zed
 )
 
-echo "Installing core Homebrew formulae..."
-brew install "${BREW_FORMULAE[@]}"
+# Check missing formulae
+missing_formulae=()
+for pkg in "${BREW_FORMULAE[@]}" "${OPTIONAL_FORMULAE[@]}"; do
+  name=$(basename "$pkg")
+  if ! brew list "$name" &>/dev/null; then
+    missing_formulae+=("$pkg")
+  fi
+done
 
-echo "Installing optional Homebrew formulae (previews & utilities)..."
-brew install "${OPTIONAL_FORMULAE[@]}"
+# Check missing casks
+missing_casks=()
+for cask in "${BREW_CASKS[@]}"; do
+  if ! brew list --cask "$cask" &>/dev/null; then
+    missing_casks+=("$cask")
+  fi
+done
 
-echo "Installing GUI applications (casks)..."
-brew install --cask "${BREW_CASKS[@]}"
+if [ ${#missing_formulae[@]} -eq 0 ] && [ ${#missing_casks[@]} -eq 0 ]; then
+  echo "==> [dotfiles] All Homebrew packages already installed."
+  exit 0
+fi
+
+if [ ${#missing_formulae[@]} -gt 0 ]; then
+  echo "==> [dotfiles] Installing missing Homebrew formulae: ${missing_formulae[*]}"
+  brew install "${missing_formulae[@]}"
+fi
+
+if [ ${#missing_casks[@]} -gt 0 ]; then
+  echo "==> [dotfiles] Installing missing Homebrew casks: ${missing_casks[*]}"
+  brew install --cask "${missing_casks[@]}"
+fi
 
 echo "==> [dotfiles] All macOS packages are installed."
 {{ end -}}
