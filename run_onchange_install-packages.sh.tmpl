@@ -1,0 +1,129 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+set -euo pipefail
+
+echo "==> [dotfiles] Installing dependencies for Linux (Arch / CachyOS)..."
+
+# Core packages required by dotfiles configurations
+PACKAGES=(
+  atuin
+  aws-cli-v2
+  bat
+  eza
+  fd
+  fluxcd
+  ghostty
+  git-delta
+  github-cli
+  helm
+  k9s
+  kubectl
+  rage-encryption
+  ripgrep
+  rustic
+  starship
+  television
+  yazi
+  zed
+  zellij
+  zsh
+  zsh-autosuggestions
+  zsh-history-substring-search
+  zsh-syntax-highlighting
+)
+
+# Optional packages (rich media previews for yazi, utilities)
+OPTIONAL_PACKAGES=(
+  7zip         # yazi: archive extraction and preview
+  ffmpeg       # yazi: video thumbnail generation
+  fzf          # yazi & shell: fuzzy finding
+  imagemagick  # yazi: image and font preview
+  jq           # yazi: JSON formatting and preview
+  poppler      # yazi: PDF preview
+  resvg        # yazi: SVG preview
+  zoxide       # yazi & shell: historical directory navigation
+)
+
+INSTALLER=""
+if command -v paru &>/dev/null; then
+  INSTALLER="paru -S --needed --noconfirm"
+elif command -v pacman &>/dev/null; then
+  INSTALLER="sudo pacman -S --needed --noconfirm"
+else
+  echo "Error: Neither paru nor pacman found." >&2
+  exit 1
+fi
+
+echo "Installing core packages..."
+$INSTALLER "${PACKAGES[@]}"
+
+echo "Installing optional packages (previews & utilities)..."
+$INSTALLER "${OPTIONAL_PACKAGES[@]}"
+
+echo "==> [dotfiles] All Linux packages are installed."
+
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -euo pipefail
+
+echo "==> [dotfiles] Installing dependencies for macOS via Homebrew..."
+
+if ! command -v brew &>/dev/null; then
+  echo "Homebrew not found. Please install Homebrew first: https://brew.sh"
+  exit 1
+fi
+
+# Core CLI formulae
+BREW_FORMULAE=(
+  atuin
+  awscli
+  bat
+  eza
+  fd
+  fluxcd/tap/flux
+  gh
+  git-delta
+  helm
+  k9s
+  kubernetes-cli
+  rage
+  ripgrep
+  rustic
+  starship
+  television
+  yazi
+  zellij
+  zsh-autosuggestions
+  zsh-history-substring-search
+  zsh-syntax-highlighting
+)
+
+# Optional packages (rich media previews for yazi, utilities)
+OPTIONAL_FORMULAE=(
+  sevenzip     # yazi: archive extraction and preview
+  ffmpeg       # yazi: video thumbnail generation
+  fzf          # yazi & shell: fuzzy finding
+  imagemagick  # yazi: image and font preview
+  jq           # yazi: JSON preview
+  poppler      # yazi: PDF preview
+  resvg        # yazi: SVG preview
+  zoxide       # yazi & shell: historical directory navigation
+)
+
+# GUI Casks
+BREW_CASKS=(
+  ghostty
+  zed
+)
+
+echo "Installing core Homebrew formulae..."
+brew install "${BREW_FORMULAE[@]}"
+
+echo "Installing optional Homebrew formulae (previews & utilities)..."
+brew install "${OPTIONAL_FORMULAE[@]}"
+
+echo "Installing GUI applications (casks)..."
+brew install --cask "${BREW_CASKS[@]}"
+
+echo "==> [dotfiles] All macOS packages are installed."
+{{ end -}}
