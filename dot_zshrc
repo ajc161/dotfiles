@@ -35,10 +35,6 @@ if [[ "$ENABLE_CORRECTION" == "true" ]]; then
   alias tailscale='nocorrect tailscale'
 fi
 
-# Path additions
-[[ -d "${KREW_ROOT:-$HOME/.krew}/bin" ]] && path=("${KREW_ROOT:-$HOME/.krew}/bin" $path)
-[[ -d "$HOME/.npm-global/bin" ]] && path=("$HOME/.npm-global/bin" $path)
-
 # Aliases
 if command -v eza &>/dev/null; then
   alias ls='eza --classify --icons --git --group-directories-first'
