@@ -1,35 +1,51 @@
-# Set some options
+# CachyOS integration (if on CachyOS / Linux)
+if [[ -f /usr/share/cachyos-zsh-config/cachyos-config.zsh ]]; then
+  source /usr/share/cachyos-zsh-config/cachyos-config.zsh
+fi
+
+# Shell options
 setopt autocd extendedglob notify
 
-# Use vi mode
+# Vi keybindings
 bindkey -v
 
-# Configure completion
-zstyle :compinstall filename '/home/adam/.zshrc'
+# Completion
 autoload -Uz compinit
 compinit
 
-# Use bat as man pager
-export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
+# Bat pager & AWS pager
+if command -v bat &>/dev/null; then
+  export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
+  export AWS_PAGER="bat --language=yaml --style=plain"
+  alias cat='bat --paging=never'
+fi
 
-# Load Starhhip shell
-eval "$(starship init zsh)"
+# Disable argument correction for tailscale if correction is enabled
+if [[ "$ENABLE_CORRECTION" == "true" ]]; then
+  alias tailscale='nocorrect tailscale'
+fi
 
-# Load Television integration
-eval "$(tv init zsh)"
-
-# Load Atuin history
-eval "$(atuin init zsh)"
-
-# Load Krew plugins
-path=("${KREW_ROOT:-$HOME/.krew}/bin" $path)
-
-# Add NPM global packages to path
-path=("~/.npm-global/bin" $path)
+# Path additions
+[[ -d "${KREW_ROOT:-$HOME/.krew}/bin" ]] && path=("${KREW_ROOT:-$HOME/.krew}/bin" $path)
+[[ -d "$HOME/.npm-global/bin" ]] && path=("$HOME/.npm-global/bin" $path)
 
 # Aliases
-alias ls='eza --classify --icons --git --group-directories-first'
-alias ll='ls --long --all'
-alias lx='ls --extended --all'
-alias lt='ls --tree'
-alias cat='bat --paging=never'
+if command -v eza &>/dev/null; then
+  alias ls='eza --classify --icons --git --group-directories-first'
+  alias ll='ls --long --all'
+  alias lx='ls --extended --all'
+  alias lt='ls --tree'
+fi
+
+# Tool integrations
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+fi
+
+if command -v atuin &>/dev/null; then
+  eval "$(atuin init zsh)"
+fi
+
+if command -v tv &>/dev/null; then
+  eval "$(tv init zsh)"
+fi
