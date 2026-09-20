@@ -1,5 +1,18 @@
 encryption = "age"
 
 [age]
-identity = "~/.config/chezmoi/key.txt"
-recipient = "age1exhkq224lcq487wcm6ykgzndkahshpsjknz24q5akg0uz983eyxsu4h8zh"
+    command = "rage"
+    identity = "~/.config/chezmoi/key.txt"
+    recipient = "age1exhkq224lcq487wcm6ykgzndkahshpsjknz24q5akg0uz983eyxsu4h8zh"
+
+[git]
+    autoCommit = true
+    autoPush = false
+
+[diff]
+    pager = "delta"
+    reverse = true
+    exclude = ["scripts", "externals"]
+
+[edit]
+    apply = true
