@@ -1,0 +1,90 @@
+# Starship configuration with multi-line layout and vi-mode indicator
+format = """
+$directory\
+$git_branch\
+$git_status\
+$kubernetes\
+$docker_context\
+$aws\
+$line_break\
+$jobs\
+$status\
+$character"""
+
+right_format = """$cmd_duration"""
+command_timeout = 500
+add_newline = true
+
+[directory]
+style = "bold #8aadf4"
+truncation_length = 3
+truncate_to_repo = true
+truncation_symbol = "…/"
+read_only = " 󰌾"
+read_only_style = "bold #ed8796"
+
+[git_branch]
+style = "bold #c6a0f6"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold #ed8796"
+format = "([$all_status$ahead_behind]($style) )"
+conflicted = "󰞇 "
+ahead = "⇡${count} "
+behind = "⇣${count} "
+untracked = "? "
+modified = "! "
+staged = "+ "
+
+[kubernetes]
+disabled = false
+symbol = " "
+format = '[$symbol$context( \($namespace\))]($style) '
+style = "bold #8bd5ca"
+
+[[kubernetes.contexts]]
+context_pattern = "admin@roshar"
+context_alias = "roshar"
+
+[aws]
+symbol = " "
+format = '[($symbol$profile )]($style)'
+style = "bold #f5a97f"
+
+{{ if and (eq .chezmoi.os "darwin") (hasPrefix "cookbook" (lower .chezmoi.hostname)) -}}
+[aws.profile_aliases]
+danti-commercial-prod-pu = "commercial-prod-pu"
+danti-govcloud-prod-pu = "govcloud-prod-pu"
+
+{{ end -}}
+[docker_context]
+symbol = " "
+format = "[$symbol$context]($style) "
+style = "bold #91d7e3"
+only_with_files = true
+
+[jobs]
+symbol = "✦ "
+format = "[$symbol$number]($style) "
+style = "bold #eed49f"
+number_threshold = 1
+
+[status]
+disabled = false
+symbol = "✘ "
+format = '[$symbol$status]($style) '
+style = "bold #ed8796"
+
+[cmd_duration]
+min_time = 2_000
+format = "took [$duration]($style) "
+style = "dimmed #eed49f"
+
+[character]
+success_symbol = "[❯](bold #a6da95)"
+error_symbol = "[❯](bold #ed8796)"
+vimcmd_symbol = "[❮](bold #eed49f)"
+vimcmd_replace_one_symbol = "[❮](bold #c6a0f6)"
+vimcmd_replace_symbol = "[❮](bold #c6a0f6)"
+vimcmd_visual_symbol = "[❮](bold #8bd5ca)"
