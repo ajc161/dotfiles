@@ -43,9 +43,12 @@ symbol = " "
 format = '[$symbol$context( \($namespace\))]($style) '
 style = "bold #8bd5ca"
 
+{{ if and (eq .chezmoi.os "darwin") (hasPrefix "cookbook" (lower .chezmoi.hostname)) -}}
 [[kubernetes.contexts]]
-context_pattern = "admin@roshar"
-context_alias = "roshar"
+context_pattern = "danti-(?P<cluster>[\\w-]+)"
+context_alias = "$cluster"
+
+{{ end -}}
 
 [aws]
 symbol = " "
