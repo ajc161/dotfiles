@@ -8,6 +8,11 @@ bindkey -v
 autoload -Uz compinit
 compinit
 
+autoload -Uz bashcompinit && bashcompinit
+if (( $+commands[aws_completer] )); then
+  complete -C aws_completer aws
+fi
+
 # Plugin paths (Linux / CachyOS and Apple Silicon macOS)
 plugin_dirs=(
   "/usr/share/zsh/plugins"
