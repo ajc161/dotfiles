@@ -3,4 +3,8 @@ key.txt.age
 {{ if ne .chezmoi.os "linux" }}
 .config/niri/**
 .config/noctalia/**
+.config/gtk-3.0/**
+.config/gtk-4.0/**
+.config/qt5ct/**
+.config/qt6ct/**
 {{ end }}
