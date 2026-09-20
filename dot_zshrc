@@ -55,3 +55,7 @@ fi
 if command -v tv &>/dev/null; then
   eval "$(tv init zsh)"
 fi
+
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh)"
+fi

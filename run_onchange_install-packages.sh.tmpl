@@ -13,7 +13,9 @@ PACKAGES=(
   ghostty
   git-delta
   github-cli
+  go-yq
   helm
+  jq
   k9s
   kubectl
   rage-encryption
@@ -24,6 +26,7 @@ PACKAGES=(
   yazi
   zed
   zellij
+  zoxide
   zsh
   zsh-autosuggestions
   zsh-history-substring-search
@@ -36,10 +39,8 @@ OPTIONAL_PACKAGES=(
   ffmpeg       # yazi: video thumbnail generation
   fzf          # yazi & shell: fuzzy finding
   imagemagick  # yazi: image and font preview
-  jq           # yazi: JSON formatting and preview
   poppler      # yazi: PDF preview
   resvg        # yazi: SVG preview
-  zoxide       # yazi & shell: historical directory navigation
 )
 
 # Check which packages are missing before invoking package manager / sudo
@@ -88,6 +89,7 @@ BREW_FORMULAE=(
   gh
   git-delta
   helm
+  jq
   k9s
   kubernetes-cli
   rage
@@ -96,7 +98,10 @@ BREW_FORMULAE=(
   starship
   television
   yazi
+  yq
+  zed
   zellij
+  zoxide
   zsh-autosuggestions
   zsh-history-substring-search
   zsh-syntax-highlighting
@@ -108,10 +113,8 @@ OPTIONAL_FORMULAE=(
   ffmpeg       # yazi: video thumbnail generation
   fzf          # yazi & shell: fuzzy finding
   imagemagick  # yazi: image and font preview
-  jq           # yazi: JSON preview
   poppler      # yazi: PDF preview
   resvg        # yazi: SVG preview
-  zoxide       # yazi & shell: historical directory navigation
 )
 
 # GUI Casks
