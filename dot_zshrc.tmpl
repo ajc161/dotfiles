@@ -106,7 +106,7 @@ case ":$PATH:" in
 esac
 
 # Default AWS Profile
-export AWS_PROFILE=${AWS_PROFILE:-test-pu}
+export AWS_PROFILE=${AWS_PROFILE:-danti-commercial-test-pu}
 {{ end -}}
 
 {{ if stat (joinPath .chezmoi.sourceDir ".secrets.age") -}}
