@@ -1,0 +1,115 @@
+# History
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+# Shell options
+setopt autocd extendedglob notify
+setopt EXTENDED_HISTORY HIST_FIND_NO_DUPS HIST_IGNORE_SPACE INC_APPEND_HISTORY_TIME
+setopt AUTO_CD AUTO_PUSHD PUSHD_MINUS
+setopt AUTO_MENU ALWAYS_TO_END
+cdpath=("$HOME/Projects")
+
+path=("$HOME/.local/bin" $path)
+
+# Vi keybindings
+bindkey -v
+
+# Environment
+export GPG_TTY=$(tty)
+
+# Completions
+{{ if eq .chezmoi.os "darwin" -}}
+if (( $+commands[brew] )); then
+  fpath=($(brew --prefix)/share/zsh-completions $(brew --prefix)/share/zsh/site-functions $fpath)
+fi
+if [[ -d "$HOME/.docker/completions" ]]; then
+  fpath=("$HOME/.docker/completions" $fpath)
+fi
+{{ end -}}
+
+autoload -Uz compinit
+compinit
+
+autoload -Uz bashcompinit && bashcompinit
+if (( $+commands[aws_completer] )); then
+  complete -C aws_completer aws
+fi
+
+# Kubernetes completions
+(( $+commands[kubectl] )) && source <(kubectl completion zsh)
+(( $+commands[helm] )) && source <(helm completion zsh)
+(( $+commands[flux] )) && source <(flux completion zsh) && compdef _flux flux
+(( $+commands[k9s] )) && source <(k9s completion zsh)
+(( $+commands[stern] )) && source <(stern --completion zsh)
+
+# Plugin paths (Linux / CachyOS and Apple Silicon macOS)
+plugin_dirs=(
+  "/usr/share/zsh/plugins"
+  "/opt/homebrew/share"
+  "/usr/local/share"
+)
+
+for plugin in zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search; do
+  for dir in "${plugin_dirs[@]}"; do
+    if [[ -f "$dir/$plugin/$plugin.zsh" ]]; then
+      source "$dir/$plugin/$plugin.zsh"
+      break
+    fi
+  done
+done
+
+# Bat pager & AWS pager
+if (( $+commands[bat] )); then
+  export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
+  export AWS_PAGER="bat --language=yaml --style=plain"
+  alias cat='bat --paging=never'
+fi
+
+# Disable argument correction for tailscale if correction is enabled
+if [[ "$ENABLE_CORRECTION" == "true" ]]; then
+  alias tailscale='nocorrect tailscale'
+fi
+
+# Aliases
+alias cp='cp -i'
+alias df='df -h'
+(( $+commands[free] )) && alias free='free -m'
+
+if (( $+commands[eza] )); then
+  alias ls='eza --classify --icons --git --group-directories-first'
+  alias ll='ls --long --all'
+  alias lx='ls --extended --all'
+  alias lt='ls --tree'
+  alias l.='ls --treat-dirs-as-files .*'
+  alias l1='ls --oneline'
+fi
+
+# Tool integrations
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+(( $+commands[atuin] )) && eval "$(atuin init zsh)"
+(( $+commands[tv] )) && eval "$(tv init zsh)"
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Node Version Manager (NVM)
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+
+# PNPM
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# Default AWS Profile
+export AWS_PROFILE=${AWS_PROFILE:-test-pu}
+{{ end -}}
+
+{{ if stat (joinPath .chezmoi.sourceDir "encrypted_secrets.age") -}}
+# Secrets (encrypted with age in chezmoi repo)
+{{ decrypt (include "encrypted_secrets.age") }}
+{{ end -}}

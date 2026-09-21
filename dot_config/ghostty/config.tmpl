@@ -1,0 +1,15 @@
+theme = Catppuccin Macchiato
+background-opacity-cells = true
+
+{{ if eq .chezmoi.os "darwin" -}}
+font-family = "IosevkaTerm Nerd Font"
+font-size = 15
+background-opacity = 0.75
+background-blur = macos-glass-regular
+command = /opt/homebrew/bin/zsh
+{{ else -}}
+font-family = "MesloLGM Nerd Font Mono"
+font-size = 10
+background-opacity = 0.9
+background-blur = true
+{{ end -}}
