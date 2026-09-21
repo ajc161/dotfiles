@@ -1,0 +1,170 @@
+{
+  "diff_view_style": "split",
+  "vim_mode": true,
+  "helix_mode": false,
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "cursor_blink": false,
+  "relative_line_numbers": "enabled",
+  "scroll_beyond_last_line": "vertical_scroll_margin",
+  "cli_default_open_behavior": "existing_window",
+  "file_types": {
+    "Helm": ["**/charts/*/templates/*"],
+    "Starlark": ["Tiltfile"]
+  },
+  "languages": {
+    "Starlark": { "language_servers": ["tilt", "!starpls", "!buck2-lsp"] }
+  },
+{{ if eq .chezmoi.os "darwin" -}}
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Macchiato"
+  },
+  "icon_theme": "Catppuccin Macchiato",
+  "buffer_font_family": "IosevkaTerm Nerd Font Mono",
+  "terminal": {
+    "font_family": "IosevkaTerm Nerd Font",
+    "shell": { "program": "zsh" }
+  },
+  "agent": {
+    "default_model": {
+      "provider": "google",
+      "model": "gemini-3.6-flash",
+      "enable_thinking": true,
+      "effort": "medium"
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "context_servers": {
+    "eks-mcp-prod": {
+      "enabled": true,
+      "remote": false,
+      "command": "uvx",
+      "args": [
+        "awslabs.eks-mcp-server@latest",
+        "--allow-write",
+        "--allow-sensitive-data-access"
+      ],
+      "env": {
+        "AWS_PROFILE": "danti-commercial-prod-pu",
+        "AWS_REGION": "us-west-2"
+      }
+    },
+    "eks-mcp-gov": {
+      "enabled": true,
+      "remote": false,
+      "command": "uvx",
+      "args": [
+        "awslabs.eks-mcp-server@latest",
+        "--allow-write",
+        "--allow-sensitive-data-access"
+      ],
+      "env": {
+        "AWS_PROFILE": "danti-govcloud-prod-admin",
+        "AWS_REGION": "us-gov-west-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "linear": {
+      "enabled": true,
+      "remote": false,
+      "command": "pnpm",
+      "args": ["dlx", "mcp-remote@latest", "https://mcp.linear.app/mcp"]
+    },
+    "mcp-server-github": {
+      "enabled": true,
+      "remote": false,
+      "settings": {
+{{- if stat (joinPath .chezmoi.sourceDir ".github_token.age") }}
+        "github_personal_access_token": "{{ decrypt (include ".github_token.age") | trim }}"
+{{- else }}
+        "github_personal_access_token": ""
+{{- end }}
+      }
+    }
+  },
+  "agent_servers": {
+    "antigravity-acp": {
+      "default_config_options": {
+        "model": "gemini-3.7-flash-high",
+        "mode": "yolo"
+      },
+      "type": "registry"
+    },
+    "claude-acp": {
+      "default_config_options": {
+        "model": "default",
+        "mode": "auto"
+      },
+      "type": "registry"
+    },
+    "cursor": {
+      "default_config_options": {
+        "mode": "agent"
+      },
+      "type": "registry"
+    },
+    "github-copilot-cli": {
+      "type": "registry"
+    }
+  },
+  "edit_predictions": {
+    "provider": "copilot"
+  }
+{{ else -}}
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Catppuccin Mocha"
+  },
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Catppuccin Macchiato",
+    "dark": "Catppuccin Mocha"
+  },
+  "agent_servers": {
+    "antigravity-acp": {
+      "default_config_options": {
+        "mode": "auto_edit"
+      },
+      "type": "registry"
+    }
+  },
+  "edit_predictions": {
+    "ollama": {
+      "model": "gemma4:e4b"
+    },
+    "provider": "copilot"
+  },
+  "agent": {
+    "tool_permissions": {
+      "tools": {
+        "terminal": {
+          "always_allow": [
+            {
+              "pattern": "^cargo\\s+clippy(\\s|$)"
+            },
+            {
+              "pattern": "^cargo\\s+check(\\s|$)"
+            }
+          ]
+        }
+      }
+    },
+    "default_model": {
+      "provider": "ollama",
+      "model": "gemma4:26b-a4b-it-qat-zed",
+      "enable_thinking": true
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "language_models": {
+    "ollama": {
+      "api_url": "http://grog:11434"
+    }
+  }
+{{ end -}}
+}
