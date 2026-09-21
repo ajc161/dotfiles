@@ -9,5 +9,16 @@
 ehthumbs.db
 Thumbs.db
 
+# Editor and IDE directories
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+
+.cursor/*
+!.cursor/worktrees.json
+
 # Tool and AI assistant local state
 **/.claude/settings.local.json
+.superpowers/
+docs/superpowers/

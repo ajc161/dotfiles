@@ -43,7 +43,7 @@ symbol = " "
 format = '[$symbol$context( \($namespace\))]($style) '
 style = "bold #8bd5ca"
 
-{{ if and (eq .chezmoi.os "darwin") (hasPrefix "cookbook" (lower .chezmoi.hostname)) -}}
+{{ if eq .chezmoi.os "darwin" -}}
 [[kubernetes.contexts]]
 context_pattern = "danti-(?P<cluster>[\\w-]+)"
 context_alias = "$cluster"
@@ -55,7 +55,7 @@ symbol = " "
 format = '[($symbol$profile )]($style)'
 style = "bold #f5a97f"
 
-{{ if and (eq .chezmoi.os "darwin") (hasPrefix "cookbook" (lower .chezmoi.hostname)) -}}
+{{ if eq .chezmoi.os "darwin" -}}
 [aws.profile_aliases]
 danti-commercial-prod-pu = "commercial-prod-pu"
 danti-govcloud-prod-pu = "govcloud-prod-pu"

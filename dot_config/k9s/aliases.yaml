@@ -7,3 +7,6 @@ aliases:
   ro: roles
   rb: rolebindings
   np: networkpolicies
+  oteli: Instrumentation
+  otelb: OpAMPBridge
+  otelc: OpenTelemetryCollector
