@@ -109,7 +109,7 @@ esac
 export AWS_PROFILE=${AWS_PROFILE:-test-pu}
 {{ end -}}
 
-{{ if stat (joinPath .chezmoi.sourceDir "encrypted_secrets.age") -}}
+{{ if stat (joinPath .chezmoi.sourceDir ".secrets.age") -}}
 # Secrets (encrypted with age in chezmoi repo)
-{{ decrypt (include "encrypted_secrets.age") }}
+{{ decrypt (include ".secrets.age") }}
 {{ end -}}
