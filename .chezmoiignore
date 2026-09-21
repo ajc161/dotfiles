@@ -1,4 +1,5 @@
 key.txt.age
+.config/television/cable/**
 
 {{ if ne .chezmoi.os "linux" }}
 .config/niri/**

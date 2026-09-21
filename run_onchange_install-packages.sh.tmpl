@@ -59,23 +59,28 @@ for pkg in "${PACKAGES[@]}" "${OPTIONAL_PACKAGES[@]}"; do
   fi
 done
 
-if [ ${#missing_packages[@]} -eq 0 ]; then
-  echo "==> [dotfiles] All packages already installed."
-  exit 0
-fi
+if [ ${#missing_packages[@]} -gt 0 ]; then
+  echo "==> [dotfiles] Installing missing packages: ${missing_packages[*]}"
 
-echo "==> [dotfiles] Installing missing packages: ${missing_packages[*]}"
+  if command -v paru &>/dev/null; then
+    paru -S --needed --noconfirm "${missing_packages[@]}"
+  elif command -v pacman &>/dev/null; then
+    sudo pacman -S --needed --noconfirm "${missing_packages[@]}"
+  else
+    echo "Error: Neither paru nor pacman found." >&2
+    exit 1
+  fi
 
-if command -v paru &>/dev/null; then
-  paru -S --needed --noconfirm "${missing_packages[@]}"
-elif command -v pacman &>/dev/null; then
-  sudo pacman -S --needed --noconfirm "${missing_packages[@]}"
+  echo "==> [dotfiles] All Linux packages are installed."
 else
-  echo "Error: Neither paru nor pacman found." >&2
-  exit 1
+  echo "==> [dotfiles] All packages already installed."
 fi
 
-echo "==> [dotfiles] All Linux packages are installed."
+# Update television channels
+if command -v tv &>/dev/null; then
+  echo "==> [dotfiles] Updating television channels..."
+  tv update-channels || true
+fi
 
 {{ else if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
@@ -155,11 +160,6 @@ for cask in "${BREW_CASKS[@]}"; do
   fi
 done
 
-if [ ${#missing_formulae[@]} -eq 0 ] && [ ${#missing_casks[@]} -eq 0 ]; then
-  echo "==> [dotfiles] All Homebrew packages already installed."
-  exit 0
-fi
-
 if [ ${#missing_formulae[@]} -gt 0 ]; then
   echo "==> [dotfiles] Installing missing Homebrew formulae: ${missing_formulae[*]}"
   brew install "${missing_formulae[@]}"
@@ -170,5 +170,15 @@ if [ ${#missing_casks[@]} -gt 0 ]; then
   brew install --cask "${missing_casks[@]}"
 fi
 
-echo "==> [dotfiles] All macOS packages are installed."
+if [ ${#missing_formulae[@]} -eq 0 ] && [ ${#missing_casks[@]} -eq 0 ]; then
+  echo "==> [dotfiles] All Homebrew packages already installed."
+else
+  echo "==> [dotfiles] All macOS packages are installed."
+fi
+
+# Update television channels
+if command -v tv &>/dev/null; then
+  echo "==> [dotfiles] Updating television channels..."
+  tv update-channels || true
+fi
 {{ end -}}
