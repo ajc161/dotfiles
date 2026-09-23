@@ -15,7 +15,7 @@
   "languages": {
     "Starlark": { "language_servers": ["tilt", "!starpls", "!buck2-lsp"] }
   },
-{{ if eq .chezmoi.os "darwin" -}}
+{{- if eq .chezmoi.os "darwin" }}
   "theme": {
     "mode": "system",
     "light": "Catppuccin Latte",
@@ -166,5 +166,5 @@
       "api_url": "http://grog:11434"
     }
   }
-{{ end -}}
+{{- end }}
 }
